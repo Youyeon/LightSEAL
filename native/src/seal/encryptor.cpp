@@ -192,20 +192,21 @@ namespace seal
         }
 
         auto scheme = context_.key_context_data()->parms().scheme();
-        if (scheme == scheme_type::bfv)
-        {
-            if (plain.is_ntt_form())
-            {
-                throw invalid_argument("plain cannot be in NTT form");
-            }
+        // if (scheme == scheme_type::bfv)
+        // {
+        //     if (plain.is_ntt_form())
+        //     {
+        //         throw invalid_argument("plain cannot be in NTT form");
+        //     }
 
-            encrypt_zero_internal(context_.first_parms_id(), is_asymmetric, save_seed, destination, pool);
+        //     encrypt_zero_internal(context_.first_parms_id(), is_asymmetric, save_seed, destination, pool);
 
-            // Multiply plain by scalar coeff_div_plaintext and reposition if in upper-half.
-            // Result gets added into the c_0 term of ciphertext (c_0,c_1).
-            multiply_add_plain_with_scaling_variant(plain, *context_.first_context_data(), *iter(destination));
-        }
-        else if (scheme == scheme_type::ckks)
+        //     // Multiply plain by scalar coeff_div_plaintext and reposition if in upper-half.
+        //     // Result gets added into the c_0 term of ciphertext (c_0,c_1).
+        //     multiply_add_plain_with_scaling_variant(plain, *context_.first_context_data(), *iter(destination));
+        // }
+        // else 
+        if (scheme == scheme_type::ckks)
         {
             if (!plain.is_ntt_form())
             {

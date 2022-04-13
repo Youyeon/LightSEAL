@@ -94,9 +94,9 @@ namespace seal
 
         switch (parms.scheme())
         {
-        case scheme_type::bfv:
-            bfv_decrypt(encrypted, destination, pool_);
-            return;
+        // case scheme_type::bfv:
+        //     bfv_decrypt(encrypted, destination, pool_);
+        //     return;
 
         case scheme_type::ckks:
             ckks_decrypt(encrypted, destination, pool_);
@@ -107,45 +107,45 @@ namespace seal
         }
     }
 
-    void Decryptor::bfv_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool)
-    {
-        if (encrypted.is_ntt_form())
-        {
-            throw invalid_argument("encrypted cannot be in NTT form");
-        }
+    // void Decryptor::bfv_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool)
+    // {
+    //     if (encrypted.is_ntt_form())
+    //     {
+    //         throw invalid_argument("encrypted cannot be in NTT form");
+    //     }
 
-        auto &context_data = *context_.get_context_data(encrypted.parms_id());
-        auto &parms = context_data.parms();
-        auto &coeff_modulus = parms.coeff_modulus();
-        size_t coeff_count = parms.poly_modulus_degree();
-        size_t coeff_modulus_size = coeff_modulus.size();
+    //     auto &context_data = *context_.get_context_data(encrypted.parms_id());
+    //     auto &parms = context_data.parms();
+    //     auto &coeff_modulus = parms.coeff_modulus();
+    //     size_t coeff_count = parms.poly_modulus_degree();
+    //     size_t coeff_modulus_size = coeff_modulus.size();
 
-        // Firstly find c_0 + c_1 *s + ... + c_{count-1} * s^{count-1} mod q
-        // This is equal to Delta m + v where ||v|| < Delta/2.
-        // Add Delta / 2 and now we have something which is Delta * (m + epsilon) where epsilon < 1
-        // Therefore, we can (integer) divide by Delta and the answer will round down to m.
+    //     // Firstly find c_0 + c_1 *s + ... + c_{count-1} * s^{count-1} mod q
+    //     // This is equal to Delta m + v where ||v|| < Delta/2.
+    //     // Add Delta / 2 and now we have something which is Delta * (m + epsilon) where epsilon < 1
+    //     // Therefore, we can (integer) divide by Delta and the answer will round down to m.
 
-        // Make a temp destination for all the arithmetic mod qi before calling FastBConverse
-        SEAL_ALLOCATE_ZERO_GET_RNS_ITER(tmp_dest_modq, coeff_count, coeff_modulus_size, pool);
+    //     // Make a temp destination for all the arithmetic mod qi before calling FastBConverse
+    //     SEAL_ALLOCATE_ZERO_GET_RNS_ITER(tmp_dest_modq, coeff_count, coeff_modulus_size, pool);
 
-        // put < (c_1 , c_2, ... , c_{count-1}) , (s,s^2,...,s^{count-1}) > mod q in destination
-        // Now do the dot product of encrypted_copy and the secret key array using NTT.
-        // The secret key powers are already NTT transformed.
-        dot_product_ct_sk_array(encrypted, tmp_dest_modq, pool_);
+    //     // put < (c_1 , c_2, ... , c_{count-1}) , (s,s^2,...,s^{count-1}) > mod q in destination
+    //     // Now do the dot product of encrypted_copy and the secret key array using NTT.
+    //     // The secret key powers are already NTT transformed.
+    //     dot_product_ct_sk_array(encrypted, tmp_dest_modq, pool_);
 
-        // Allocate a full size destination to write to
-        destination.parms_id() = parms_id_zero;
-        destination.resize(coeff_count);
+    //     // Allocate a full size destination to write to
+    //     destination.parms_id() = parms_id_zero;
+    //     destination.resize(coeff_count);
 
-        // Divide scaling variant using BEHZ FullRNS techniques
-        context_data.rns_tool()->decrypt_scale_and_round(tmp_dest_modq, destination.data(), pool);
+    //     // Divide scaling variant using BEHZ FullRNS techniques
+    //     context_data.rns_tool()->decrypt_scale_and_round(tmp_dest_modq, destination.data(), pool);
 
-        // How many non-zero coefficients do we really have in the result?
-        size_t plain_coeff_count = get_significant_uint64_count_uint(destination.data(), coeff_count);
+    //     // How many non-zero coefficients do we really have in the result?
+    //     size_t plain_coeff_count = get_significant_uint64_count_uint(destination.data(), coeff_count);
 
-        // Resize destination to appropriate size
-        destination.resize(max(plain_coeff_count, size_t(1)));
-    }
+    //     // Resize destination to appropriate size
+    //     destination.resize(max(plain_coeff_count, size_t(1)));
+    // }
 
     void Decryptor::ckks_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool)
     {
@@ -332,67 +332,67 @@ namespace seal
         }
     }
 
-    int Decryptor::invariant_noise_budget(const Ciphertext &encrypted)
-    {
-        // Verify that encrypted is valid.
-        if (!is_valid_for(encrypted, context_))
-        {
-            throw invalid_argument("encrypted is not valid for encryption parameters");
-        }
+    // int Decryptor::invariant_noise_budget(const Ciphertext &encrypted)
+    // {
+    //     // Verify that encrypted is valid.
+    //     if (!is_valid_for(encrypted, context_))
+    //     {
+    //         throw invalid_argument("encrypted is not valid for encryption parameters");
+    //     }
 
-        // Additionally check that ciphertext doesn't have trivial size
-        if (encrypted.size() < SEAL_CIPHERTEXT_SIZE_MIN)
-        {
-            throw invalid_argument("encrypted is empty");
-        }
+    //     // Additionally check that ciphertext doesn't have trivial size
+    //     if (encrypted.size() < SEAL_CIPHERTEXT_SIZE_MIN)
+    //     {
+    //         throw invalid_argument("encrypted is empty");
+    //     }
 
-        if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
-        {
-            throw logic_error("unsupported scheme");
-        }
-        if (encrypted.is_ntt_form())
-        {
-            throw invalid_argument("encrypted cannot be in NTT form");
-        }
+    //     if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
+    //     {
+    //         throw logic_error("unsupported scheme");
+    //     }
+    //     if (encrypted.is_ntt_form())
+    //     {
+    //         throw invalid_argument("encrypted cannot be in NTT form");
+    //     }
 
-        auto &context_data = *context_.get_context_data(encrypted.parms_id());
-        auto &parms = context_data.parms();
-        auto &coeff_modulus = parms.coeff_modulus();
-        auto &plain_modulus = parms.plain_modulus();
-        size_t coeff_count = parms.poly_modulus_degree();
-        size_t coeff_modulus_size = coeff_modulus.size();
+    //     auto &context_data = *context_.get_context_data(encrypted.parms_id());
+    //     auto &parms = context_data.parms();
+    //     auto &coeff_modulus = parms.coeff_modulus();
+    //     auto &plain_modulus = parms.plain_modulus();
+    //     size_t coeff_count = parms.poly_modulus_degree();
+    //     size_t coeff_modulus_size = coeff_modulus.size();
 
-        // Storage for the infinity norm of noise poly
-        auto norm(allocate_uint(coeff_modulus_size, pool_));
+    //     // Storage for the infinity norm of noise poly
+    //     auto norm(allocate_uint(coeff_modulus_size, pool_));
 
-        // Storage for noise poly
-        SEAL_ALLOCATE_ZERO_GET_RNS_ITER(noise_poly, coeff_count, coeff_modulus_size, pool_);
+    //     // Storage for noise poly
+    //     SEAL_ALLOCATE_ZERO_GET_RNS_ITER(noise_poly, coeff_count, coeff_modulus_size, pool_);
 
-        // Now need to compute c(s) - Delta*m (mod q)
-        // Firstly find c_0 + c_1 *s + ... + c_{count-1} * s^{count-1} mod q
-        // This is equal to Delta m + v where ||v|| < Delta/2.
-        // put < (c_1 , c_2, ... , c_{count-1}) , (s,s^2,...,s^{count-1}) > mod q
-        // in destination_poly.
-        // Now do the dot product of encrypted_copy and the secret key array using NTT.
-        // The secret key powers are already NTT transformed.
-        dot_product_ct_sk_array(encrypted, noise_poly, pool_);
+    //     // Now need to compute c(s) - Delta*m (mod q)
+    //     // Firstly find c_0 + c_1 *s + ... + c_{count-1} * s^{count-1} mod q
+    //     // This is equal to Delta m + v where ||v|| < Delta/2.
+    //     // put < (c_1 , c_2, ... , c_{count-1}) , (s,s^2,...,s^{count-1}) > mod q
+    //     // in destination_poly.
+    //     // Now do the dot product of encrypted_copy and the secret key array using NTT.
+    //     // The secret key powers are already NTT transformed.
+    //     dot_product_ct_sk_array(encrypted, noise_poly, pool_);
 
-        // Multiply by plain_modulus and reduce mod coeff_modulus to get
-        // coeff_modulus()*noise.
-        multiply_poly_scalar_coeffmod(noise_poly, coeff_modulus_size, plain_modulus.value(), coeff_modulus, noise_poly);
+    //     // Multiply by plain_modulus and reduce mod coeff_modulus to get
+    //     // coeff_modulus()*noise.
+    //     multiply_poly_scalar_coeffmod(noise_poly, coeff_modulus_size, plain_modulus.value(), coeff_modulus, noise_poly);
 
-        // CRT-compose the noise
-        context_data.rns_tool()->base_q()->compose_array(noise_poly, coeff_count, pool_);
+    //     // CRT-compose the noise
+    //     context_data.rns_tool()->base_q()->compose_array(noise_poly, coeff_count, pool_);
 
-        // Next we compute the infinity norm mod parms.coeff_modulus()
-        StrideIter<const uint64_t *> wide_noise_poly((*noise_poly).ptr(), coeff_modulus_size);
-        poly_infty_norm_coeffmod(wide_noise_poly, coeff_count, context_data.total_coeff_modulus(), norm.get(), pool_);
+    //     // Next we compute the infinity norm mod parms.coeff_modulus()
+    //     StrideIter<const uint64_t *> wide_noise_poly((*noise_poly).ptr(), coeff_modulus_size);
+    //     poly_infty_norm_coeffmod(wide_noise_poly, coeff_count, context_data.total_coeff_modulus(), norm.get(), pool_);
 
-        // The -1 accounts for scaling the invariant noise by 2;
-        // note that we already took plain_modulus into account in compose
-        // so no need to subtract log(plain_modulus) from this
-        int bit_count_diff = context_data.total_coeff_modulus_bit_count() -
-                             get_significant_bit_count_uint(norm.get(), coeff_modulus_size) - 1;
-        return max(0, bit_count_diff);
-    }
+    //     // The -1 accounts for scaling the invariant noise by 2;
+    //     // note that we already took plain_modulus into account in compose
+    //     // so no need to subtract log(plain_modulus) from this
+    //     int bit_count_diff = context_data.total_coeff_modulus_bit_count() -
+    //                          get_significant_bit_count_uint(norm.get(), coeff_modulus_size) - 1;
+    //     return max(0, bit_count_diff);
+    // }
 } // namespace seal

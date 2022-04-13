@@ -97,10 +97,10 @@ namespace seal
         parameters
         @throws std::invalid_argument if encrypted is in NTT form
         */
-        SEAL_NODISCARD int invariant_noise_budget(const Ciphertext &encrypted);
+        //SEAL_NODISCARD int invariant_noise_budget(const Ciphertext &encrypted);
 
     private:
-        void bfv_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool);
+        //void bfv_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool);
 
         void ckks_decrypt(const Ciphertext &encrypted, Plaintext &destination, MemoryPoolHandle pool);
 

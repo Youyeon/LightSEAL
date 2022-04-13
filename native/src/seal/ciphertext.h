@@ -233,21 +233,21 @@ namespace seal
         determined by the highest-level parameters associated to the given
         SEALContext.
 
-        This function is mainly intended for internal use and is called
-        automatically by functions such as Evaluator::multiply and
-        Evaluator::relinearize. A normal user should never have a reason
-        to manually resize a ciphertext.
+        // This function is mainly intended for internal use and is called
+        // automatically by functions such as Evaluator::multiply and
+        // Evaluator::relinearize. A normal user should never have a reason
+        // to manually resize a ciphertext.
 
-        @param[in] context The SEALContext
-        @param[in] size The new size
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::invalid_argument if size is less than 2 or too large
-        */
-        inline void resize(const SEALContext &context, std::size_t size)
-        {
-            auto parms_id = context.first_parms_id();
-            resize(context, parms_id, size);
-        }
+        // @param[in] context The SEALContext
+        // @param[in] size The new size
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::invalid_argument if size is less than 2 or too large
+        // */
+        // inline void resize(const SEALContext &context, std::size_t size)
+        // {
+        //     auto parms_id = context.first_parms_id();
+        //     resize(context, parms_id, size);
+        // }
 
         /**
         Resizes the ciphertext to given size, reallocating if the capacity

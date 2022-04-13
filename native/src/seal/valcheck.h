@@ -77,8 +77,8 @@ namespace seal
     Otherwise, returns true. This function only checks the metadata and not the
     KSwitchKeys data itself.
 
-    @param[in] in The KSwitchKeys to check
-    @param[in] context The SEALContext
+    // @param[in] in The KSwitchKeys to check
+    // @param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_metadata_valid_for(const KSwitchKeys &in, const SEALContext &context);
 
@@ -89,8 +89,8 @@ namespace seal
     Otherwise, returns true. This function only checks the metadata and not the
     RelinKeys data itself.
 
-    @param[in] in The RelinKeys to check
-    @param[in] context The SEALContext
+    // @param[in] in The RelinKeys to check
+    // @param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_metadata_valid_for(const RelinKeys &in, const SEALContext &context);
 
@@ -101,8 +101,8 @@ namespace seal
     Otherwise, returns true. This function only checks the metadata and not the
     GaloisKeys data itself.
 
-    @param[in] in The GaloisKeys to check
-    @param[in] context The SEALContext
+    // @param[in] in The GaloisKeys to check
+    // @param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_metadata_valid_for(const GaloisKeys &in, const SEALContext &context);
 
@@ -157,7 +157,7 @@ namespace seal
     returns false. Otherwise, returns true. This function only checks the size of
     the data buffer and not the KSwitchKeys data itself.
 
-    @param[in] in The KSwitchKeys to check
+    //@param[in] in The KSwitchKeys to check
     */
     //SEAL_NODISCARD bool is_buffer_valid(const KSwitchKeys &in);
 
@@ -168,7 +168,7 @@ namespace seal
     returns false. Otherwise, returns true. This function only checks the size of
     the data buffer and not the RelinKeys data itself.
 
-    @param[in] in The RelinKeys to check
+    //@param[in] in The RelinKeys to check
     */
     //SEAL_NODISCARD bool is_buffer_valid(const RelinKeys &in);
 
@@ -179,7 +179,7 @@ namespace seal
     returns false. Otherwise, returns true. This function only checks the size of
     the data buffer and not the GaloisKeys data itself.
 
-    @param[in] in The GaloisKeys to check
+    //@param[in] in The GaloisKeys to check
     */
     //SEAL_NODISCARD bool is_buffer_valid(const GaloisKeys &in);
 
@@ -238,8 +238,8 @@ namespace seal
     false. Otherwise, returns true. This function can be slow, as it checks the
     correctness of the entire KSwitchKeys data buffer.
 
-    @param[in] in The KSwitchKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The KSwitchKeys to check
+    //@param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_data_valid_for(const KSwitchKeys &in, const SEALContext &context);
 
@@ -250,8 +250,8 @@ namespace seal
     false. Otherwise, returns true. This function can be slow, as it checks the
     correctness of the entire RelinKeys data buffer.
 
-    @param[in] in The RelinKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The RelinKeys to check
+    //@param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_data_valid_for(const RelinKeys &in, const SEALContext &context);
 
@@ -262,8 +262,8 @@ namespace seal
     false. Otherwise, returns true. This function can be slow, as it checks the
     correctness of the entire GaloisKeys data buffer.
 
-    @param[in] in The GaloisKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The GaloisKeys to check
+    //@param[in] context The SEALContext
     */
     //SEAL_NODISCARD bool is_data_valid_for(const GaloisKeys &in, const SEALContext &context);
 
@@ -334,8 +334,8 @@ namespace seal
     false. Otherwise, returns true. This function can be slow as it checks the validity
     of all metadata and of the entire KSwitchKeys data buffer.
 
-    @param[in] in The KSwitchKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The KSwitchKeys to check
+    //@param[in] context The SEALContext
     */
     // SEAL_NODISCARD inline bool is_valid_for(const KSwitchKeys &in, const SEALContext &context)
     // {
@@ -349,8 +349,8 @@ namespace seal
     Otherwise, returns true. This function can be slow as it checks the validity
     of all metadata and of the entire RelinKeys data buffer.
 
-    @param[in] in The RelinKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The RelinKeys to check
+    //@param[in] context The SEALContext
     */
     // SEAL_NODISCARD inline bool is_valid_for(const RelinKeys &in, const SEALContext &context)
     // {
@@ -364,8 +364,8 @@ namespace seal
     Otherwise, returns true. This function can be slow as it checks the validity
     of all metadata and of the entire GaloisKeys data buffer.
 
-    @param[in] in The GaloisKeys to check
-    @param[in] context The SEALContext
+    //@param[in] in The GaloisKeys to check
+    //@param[in] context The SEALContext
     */
     // SEAL_NODISCARD inline bool is_valid_for(const GaloisKeys &in, const SEALContext &context)
     // {

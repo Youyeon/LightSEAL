@@ -4,10 +4,10 @@
 #pragma once
 
 #include "seal/context.h"
-#include "seal/galoiskeys.h"
+//#include "seal/galoiskeys.h"
 #include "seal/memorymanager.h"
 #include "seal/publickey.h"
-#include "seal/relinkeys.h"
+//#include "seal/relinkeys.h"
 #include "seal/secretkey.h"
 #include "seal/serializable.h"
 #include "seal/util/defines.h"
@@ -89,15 +89,15 @@ namespace seal
         Every time this function is called, new relinearization keys will be
         generated.
 
-        @param[out] destination The relinearization keys to overwrite with the
-        generated relinearization keys
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        */
-        inline void create_relin_keys(RelinKeys &destination)
-        {
-            destination = create_relin_keys(1, false);
-        }
+        // @param[out] destination The relinearization keys to overwrite with the
+        // generated relinearization keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // */
+        // inline void create_relin_keys(RelinKeys &destination)
+        // {
+        //     destination = create_relin_keys(1, false);
+        // }
 
         /**
         Generates and returns relinearization keys as a serializable object.
@@ -109,13 +109,13 @@ namespace seal
         directly and is meant to be serialized for the size reduction to have an
         impact.
 
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        */
-        SEAL_NODISCARD inline Serializable<RelinKeys> create_relin_keys()
-        {
-            return create_relin_keys(1, true);
-        }
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // */
+        // SEAL_NODISCARD inline Serializable<RelinKeys> create_relin_keys()
+        // {
+        //     return create_relin_keys(1, true);
+        // }
 
         /**
         Generates Galois keys and stores the result in destination. Every time
@@ -135,19 +135,19 @@ namespace seal
         (not batching), a Galois automorphism by a Galois element p changes
         Enc(plain(x)) to Enc(plain(x^p)).
 
-        @param[in] galois_elts The Galois elements for which to generate keys
-        @param[out] destination The Galois keys to overwrite with the generated
-        Galois keys
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        @throws std::invalid_argument if the Galois elements are not valid
-        */
-        inline void create_galois_keys(const std::vector<std::uint32_t> &galois_elts, GaloisKeys &destination)
-        {
-            destination = create_galois_keys(galois_elts, false);
-        }
+        // @param[in] galois_elts The Galois elements for which to generate keys
+        // @param[out] destination The Galois keys to overwrite with the generated
+        // Galois keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // @throws std::invalid_argument if the Galois elements are not valid
+        // */
+        // inline void create_galois_keys(const std::vector<std::uint32_t> &galois_elts, GaloisKeys &destination)
+        // {
+        //     destination = create_galois_keys(galois_elts, false);
+        // }
 
         /**
         Generates and returns Galois keys as a serializable object. Every time
@@ -172,17 +172,17 @@ namespace seal
         (not batching), a Galois automorphism by a Galois element p changes
         Enc(plain(x)) to Enc(plain(x^p)).
 
-        @param[in] galois_elts The Galois elements for which to generate keys
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        @throws std::invalid_argument if the Galois elements are not valid
-        */
-        SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys(const std::vector<std::uint32_t> &galois_elts)
-        {
-            return create_galois_keys(galois_elts, true);
-        }
+        // @param[in] galois_elts The Galois elements for which to generate keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // @throws std::invalid_argument if the Galois elements are not valid
+        // */
+        // SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys(const std::vector<std::uint32_t> &galois_elts)
+        // {
+        //     return create_galois_keys(galois_elts, true);
+        // }
 
         /**
         Generates Galois keys and stores the result in destination. Every time
@@ -194,19 +194,19 @@ namespace seal
         count of zero can be used to indicate a column rotation in the BFV scheme
         and complex conjugation in the CKKS scheme.
 
-        @param[in] steps The rotation step counts for which to generate keys
-        @param[out] destination The Galois keys to overwrite with the generated
-        Galois keys
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        @throws std::invalid_argument if the step counts are not valid
-        */
-        inline void create_galois_keys(const std::vector<int> &steps, GaloisKeys &destination)
-        {
-            create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_from_steps(steps), destination);
-        }
+        // @param[in] steps The rotation step counts for which to generate keys
+        // @param[out] destination The Galois keys to overwrite with the generated
+        // Galois keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // @throws std::invalid_argument if the step counts are not valid
+        // */
+        // inline void create_galois_keys(const std::vector<int> &steps, GaloisKeys &destination)
+        // {
+        //     create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_from_steps(steps), destination);
+        // }
 
         /**
         Generates and returns Galois keys as a serializable object. Every time
@@ -223,17 +223,17 @@ namespace seal
         count of zero can be used to indicate a column rotation in the BFV scheme
         and complex conjugation in the CKKS scheme.
 
-        @param[in] steps The rotation step counts for which to generate keys
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        @throws std::invalid_argument if the step counts are not valid
-        */
-        SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys(const std::vector<int> &steps)
-        {
-            return create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_from_steps(steps));
-        }
+        // @param[in] steps The rotation step counts for which to generate keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // @throws std::invalid_argument if the step counts are not valid
+        // */
+        // SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys(const std::vector<int> &steps)
+        // {
+        //     return create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_from_steps(steps));
+        // }
 
         /**
         Generates Galois keys and stores the result in destination. Every time
@@ -244,17 +244,17 @@ namespace seal
         (e.g. rotations) on encrypted data. Most users will want to use this
         overload of the function.
 
-        @param[out] destination The Galois keys to overwrite with the generated
-        Galois keys
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        */
-        inline void create_galois_keys(GaloisKeys &destination)
-        {
-            create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_all(), destination);
-        }
+        // @param[out] destination The Galois keys to overwrite with the generated
+        // Galois keys
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // */
+        // inline void create_galois_keys(GaloisKeys &destination)
+        // {
+        //     create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_all(), destination);
+        // }
 
         /**
         Generates and returns Galois keys as a serializable object. Every time
@@ -270,15 +270,15 @@ namespace seal
         (e.g. rotations) on encrypted data. Most users will want to use this
         overload of the function.
 
-        @throws std::logic_error if the encryption parameters do not support
-        batching and scheme is scheme_type::BFV
-        @throws std::logic_error if the encryption parameters do not support
-        keyswitching
-        */
-        SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys()
-        {
-            return create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_all());
-        }
+        // @throws std::logic_error if the encryption parameters do not support
+        // batching and scheme is scheme_type::BFV
+        // @throws std::logic_error if the encryption parameters do not support
+        // keyswitching
+        // */
+        // SEAL_NODISCARD inline Serializable<GaloisKeys> create_galois_keys()
+        // {
+        //     return create_galois_keys(context_.key_context_data()->galois_tool()->get_elts_all());
+        // }
 
         /**
         Enables access to private members of seal::KeyGenerator for SEAL_C.
@@ -313,14 +313,14 @@ namespace seal
         /**
         Generates new key switching keys for an array of new keys.
         */
-        void generate_kswitch_keys(
-            util::ConstPolyIter new_keys, std::size_t num_keys, KSwitchKeys &destination, bool save_seed = false);
+        // void generate_kswitch_keys(
+        //     util::ConstPolyIter new_keys, std::size_t num_keys, KSwitchKeys &destination, bool save_seed = false);
 
-        /**
-        Generates one key switching key for a new key.
-        */
-        void generate_one_kswitch_key(
-            util::ConstRNSIter new_key, std::vector<PublicKey> &destination, bool save_seed = false);
+        // /**
+        // Generates one key switching key for a new key.
+        // */
+        // void generate_one_kswitch_key(
+        //     util::ConstRNSIter new_key, std::vector<PublicKey> &destination, bool save_seed = false);
 
         /**
         Generates and returns the specified number of relinearization keys.
@@ -329,7 +329,7 @@ namespace seal
         @param[in] save_seed If true, save seed instead of a polynomial.
         @throws std::invalid_argument if count is zero or too large
         */
-        RelinKeys create_relin_keys(std::size_t count, bool save_seed);
+        //RelinKeys create_relin_keys(std::size_t count, bool save_seed);
 
         /**
         Generates and returns Galois keys. This function creates specific Galois
@@ -346,11 +346,11 @@ namespace seal
         (not batching), a Galois automorphism by a Galois element p changes
         Enc(plain(x)) to Enc(plain(x^p)).
 
-        @param[in] galois_elts The Galois elements for which to generate keys
-        @param[in] save_seed If true, replace second poly in Ciphertext with seed
-        @throws std::invalid_argument if the Galois elements are not valid
+        // @param[in] galois_elts The Galois elements for which to generate keys
+        // @param[in] save_seed If true, replace second poly in Ciphertext with seed
+        // @throws std::invalid_argument if the Galois elements are not valid
         */
-        GaloisKeys create_galois_keys(const std::vector<std::uint32_t> &galois_elts, bool save_seed);
+        //GaloisKeys create_galois_keys(const std::vector<std::uint32_t> &galois_elts, bool save_seed);
 
         // We use a fresh memory pool with `clear_on_destruction' enabled.
         MemoryPoolHandle pool_ = MemoryManager::GetPool(mm_prof_opt::mm_force_new, true);
