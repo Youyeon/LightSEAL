@@ -12,9 +12,9 @@ namespace seal
     class Ciphertext;
     class SecretKey;
     class PublicKey;
-    class KSwitchKeys;
-    class RelinKeys;
-    class GaloisKeys;
+    // class KSwitchKeys;
+    // class RelinKeys;
+    // class GaloisKeys;
 
     /**
     Check whether the given plaintext is valid for a given SEALContext. If the
@@ -80,7 +80,7 @@ namespace seal
     @param[in] in The KSwitchKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_metadata_valid_for(const KSwitchKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_metadata_valid_for(const KSwitchKeys &in, const SEALContext &context);
 
     /**
     Check whether the given RelinKeys is valid for a given SEALContext. If the
@@ -92,7 +92,7 @@ namespace seal
     @param[in] in The RelinKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_metadata_valid_for(const RelinKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_metadata_valid_for(const RelinKeys &in, const SEALContext &context);
 
     /**
     Check whether the given GaloisKeys is valid for a given SEALContext. If the
@@ -104,7 +104,7 @@ namespace seal
     @param[in] in The GaloisKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_metadata_valid_for(const GaloisKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_metadata_valid_for(const GaloisKeys &in, const SEALContext &context);
 
     /**
     Check whether the given plaintext data buffer is valid for a given SEALContext.
@@ -159,7 +159,7 @@ namespace seal
 
     @param[in] in The KSwitchKeys to check
     */
-    SEAL_NODISCARD bool is_buffer_valid(const KSwitchKeys &in);
+    //SEAL_NODISCARD bool is_buffer_valid(const KSwitchKeys &in);
 
     /**
     Check whether the given RelinKeys data buffer is valid for a given SEALContext.
@@ -170,7 +170,7 @@ namespace seal
 
     @param[in] in The RelinKeys to check
     */
-    SEAL_NODISCARD bool is_buffer_valid(const RelinKeys &in);
+    //SEAL_NODISCARD bool is_buffer_valid(const RelinKeys &in);
 
     /**
     Check whether the given GaloisKeys data buffer is valid for a given SEALContext.
@@ -181,7 +181,7 @@ namespace seal
 
     @param[in] in The GaloisKeys to check
     */
-    SEAL_NODISCARD bool is_buffer_valid(const GaloisKeys &in);
+    //SEAL_NODISCARD bool is_buffer_valid(const GaloisKeys &in);
 
     /**
     Check whether the given plaintext data and metadata are valid for a given SEALContext.
@@ -241,7 +241,7 @@ namespace seal
     @param[in] in The KSwitchKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_data_valid_for(const KSwitchKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_data_valid_for(const KSwitchKeys &in, const SEALContext &context);
 
     /**
     Check whether the given RelinKeys data and metadata are valid for a given SEALContext.
@@ -253,7 +253,7 @@ namespace seal
     @param[in] in The RelinKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_data_valid_for(const RelinKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_data_valid_for(const RelinKeys &in, const SEALContext &context);
 
     /**
     Check whether the given GaloisKeys data and metadata are valid for a given SEALContext.
@@ -265,7 +265,7 @@ namespace seal
     @param[in] in The GaloisKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD bool is_data_valid_for(const GaloisKeys &in, const SEALContext &context);
+    //SEAL_NODISCARD bool is_data_valid_for(const GaloisKeys &in, const SEALContext &context);
 
     /**
     Check whether the given plaintext is valid for a given SEALContext. If the
@@ -337,10 +337,10 @@ namespace seal
     @param[in] in The KSwitchKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD inline bool is_valid_for(const KSwitchKeys &in, const SEALContext &context)
-    {
-        return is_buffer_valid(in) && is_data_valid_for(in, context);
-    }
+    // SEAL_NODISCARD inline bool is_valid_for(const KSwitchKeys &in, const SEALContext &context)
+    // {
+    //     return is_buffer_valid(in) && is_data_valid_for(in, context);
+    // }
 
     /**
     Check whether the given RelinKeys is valid for a given SEALContext. If the
@@ -352,10 +352,10 @@ namespace seal
     @param[in] in The RelinKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD inline bool is_valid_for(const RelinKeys &in, const SEALContext &context)
-    {
-        return is_buffer_valid(in) && is_data_valid_for(in, context);
-    }
+    // SEAL_NODISCARD inline bool is_valid_for(const RelinKeys &in, const SEALContext &context)
+    // {
+    //     return is_buffer_valid(in) && is_data_valid_for(in, context);
+    // }
 
     /**
     Check whether the given GaloisKeys is valid for a given SEALContext. If the
@@ -367,8 +367,8 @@ namespace seal
     @param[in] in The GaloisKeys to check
     @param[in] context The SEALContext
     */
-    SEAL_NODISCARD inline bool is_valid_for(const GaloisKeys &in, const SEALContext &context)
-    {
-        return is_buffer_valid(in) && is_data_valid_for(in, context);
-    }
+    // SEAL_NODISCARD inline bool is_valid_for(const GaloisKeys &in, const SEALContext &context)
+    // {
+    //     return is_buffer_valid(in) && is_data_valid_for(in, context);
+    // }
 } // namespace seal

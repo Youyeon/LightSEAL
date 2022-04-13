@@ -413,7 +413,7 @@ namespace seal
         }
 
         // Create GaloisTool
-        context_data.galois_tool_ = allocate<GaloisTool>(pool_, coeff_count_power, pool_);
+        //context_data.galois_tool_ = allocate<GaloisTool>(pool_, coeff_count_power, pool_);
 
         // Done with validation and pre-computations
         return context_data;
@@ -491,7 +491,7 @@ namespace seal
         last_parms_id_ = first_parms_id_;
 
         // Check if keyswitching is available
-        using_keyswitching_ = (first_parms_id_ != key_parms_id_);
+        //using_keyswitching_ = (first_parms_id_ != key_parms_id_);
 
         // If modulus switching chain is to be created, compute the remaining parameter sets as long as they are valid
         // to use (i.e., parameters_set() == true).

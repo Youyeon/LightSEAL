@@ -10,7 +10,7 @@ set(SEAL_SOURCE_FILES ${SEAL_SOURCE_FILES}
     ${CMAKE_CURRENT_LIST_DIR}/croots.cpp
     ${CMAKE_CURRENT_LIST_DIR}/fips202.c
     ${CMAKE_CURRENT_LIST_DIR}/globals.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/galois.cpp
+    #${CMAKE_CURRENT_LIST_DIR}/galois.cpp
     ${CMAKE_CURRENT_LIST_DIR}/hash.cpp
     ${CMAKE_CURRENT_LIST_DIR}/iterator.cpp
     ${CMAKE_CURRENT_LIST_DIR}/mempool.cpp
@@ -40,7 +40,7 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/defines.h
         ${CMAKE_CURRENT_LIST_DIR}/dwthandler.h
         ${CMAKE_CURRENT_LIST_DIR}/fips202.h
-        ${CMAKE_CURRENT_LIST_DIR}/galois.h
+        #${CMAKE_CURRENT_LIST_DIR}/galois.h
         ${CMAKE_CURRENT_LIST_DIR}/gcc.h
         ${CMAKE_CURRENT_LIST_DIR}/globals.h
         ${CMAKE_CURRENT_LIST_DIR}/hash.h

@@ -475,8 +475,8 @@ namespace seal
         or is too large
         @throws std::invalid_argument if sec_level is sec_level_type::none
         */
-        SEAL_NODISCARD static std::vector<Modulus> BFVDefault(
-            std::size_t poly_modulus_degree, sec_level_type sec_level = sec_level_type::tc128);
+        // SEAL_NODISCARD static std::vector<Modulus> BFVDefault(
+        //     std::size_t poly_modulus_degree, sec_level_type sec_level = sec_level_type::tc128);
 
         /**
         Returns a custom coefficient modulus suitable for use with the specified

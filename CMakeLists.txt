@@ -706,29 +706,29 @@ endif()
 #######################################
 
 # In Windows we will set the SEAL_C library path according to the CMake generator
-set(SEAL_WINDOWS_SEAL_C_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-get_property(SEAL_IS_MULTI_CONFIG_GENERATOR GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(SEAL_IS_MULTI_CONFIG_GENERATOR)
-    # Is this the Visual Studio generator? If so, the output path will contain the configuration.
-    # We shall use CMAKE_BUILD_TYPE here, which by default will be "Release". The user has the
-    # option of changing this by explicitly specifying CMAKE_BUILD_TYPE, which multi-config
-    # generators otherwise ignore.
-    set(SEAL_WINDOWS_SEAL_C_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE})
-endif()
+# set(SEAL_WINDOWS_SEAL_C_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+# get_property(SEAL_IS_MULTI_CONFIG_GENERATOR GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+# if(SEAL_IS_MULTI_CONFIG_GENERATOR)
+#     # Is this the Visual Studio generator? If so, the output path will contain the configuration.
+#     # We shall use CMAKE_BUILD_TYPE here, which by default will be "Release". The user has the
+#     # option of changing this by explicitly specifying CMAKE_BUILD_TYPE, which multi-config
+#     # generators otherwise ignore.
+#     set(SEAL_WINDOWS_SEAL_C_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE})
+# endif()
 
 # Create SEALNet.csproj, SEALNetExamples.csproj, and SEALNetTest.csproj
-configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/src/SEALNet.csproj.in
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/src/SEALNet.csproj
-    @ONLY)
-configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/tests/SEALNetTest.csproj.in
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/tests/SEALNetTest.csproj
-    @ONLY)
-configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/examples/SEALNetExamples.csproj.in
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/examples/SEALNetExamples.csproj
-    @ONLY)
+# configure_file(
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/src/SEALNet.csproj.in
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/src/SEALNet.csproj
+#     @ONLY)
+# configure_file(
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/tests/SEALNetTest.csproj.in
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/tests/SEALNetTest.csproj
+#     @ONLY)
+# configure_file(
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/examples/SEALNetExamples.csproj.in
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/examples/SEALNetExamples.csproj
+#     @ONLY)
 
 # Set the sealc dynamic library file names to be included in creating
 # the NuGet package. When building a multi-platform NuGet package, the
@@ -736,26 +736,26 @@ configure_file(
 # command. See dotnet/nuget/SEALNet.nuspec.in.
 
 # Create SEALNet-multi.nuspec for a multi-platform NuGet package
-configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet-multi.nuspec.in
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet-multi.nuspec
-    @ONLY)
+# configure_file(
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet-multi.nuspec.in
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet-multi.nuspec
+#     @ONLY)
 
-set(NUGET_WINDOWS_SEAL_C_PATH "")
-set(NUGET_LINUX_SEAL_C_PATH "")
-set(NUGET_MACOS_SEAL_C_PATH "")
+# set(NUGET_WINDOWS_SEAL_C_PATH "")
+# set(NUGET_LINUX_SEAL_C_PATH "")
+# set(NUGET_MACOS_SEAL_C_PATH "")
 
 # Supporting local building of NuGet package
-if(WIN32)
-    set(NUGET_WINDOWS_SEAL_C_PATH ${SEAL_WINDOWS_SEAL_C_DIRECTORY}/sealc.dll)
-elseif(UNIX AND NOT APPLE)
-    set(NUGET_LINUX_SEAL_C_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libsealc.so)
-elseif(APPLE)
-    set(NUGET_MACOS_SEAL_C_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libsealc.dylib)
-endif()
+# if(WIN32)
+#     set(NUGET_WINDOWS_SEAL_C_PATH ${SEAL_WINDOWS_SEAL_C_DIRECTORY}/sealc.dll)
+# elseif(UNIX AND NOT APPLE)
+#     set(NUGET_LINUX_SEAL_C_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libsealc.so)
+# elseif(APPLE)
+#     set(NUGET_MACOS_SEAL_C_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libsealc.dylib)
+# endif()
 
 # Create SEALNet.nuspec for a local NuGet pack from SEALNet.nuspec.in
-configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet.nuspec.in
-    ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet.nuspec
-    @ONLY)
+# configure_file(
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet.nuspec.in
+#     ${CMAKE_CURRENT_LIST_DIR}/dotnet/nuget/SEALNet.nuspec
+#     @ONLY)

@@ -113,32 +113,32 @@ namespace seal
         return barrett_reduce_64(value, *this);
     }
 
-    vector<Modulus> CoeffModulus::BFVDefault(size_t poly_modulus_degree, sec_level_type sec_level)
-    {
-        if (!MaxBitCount(poly_modulus_degree, sec_level))
-        {
-            throw invalid_argument("non-standard poly_modulus_degree");
-        }
-        if (sec_level == sec_level_type::none)
-        {
-            throw invalid_argument("invalid security level");
-        }
+    // vector<Modulus> CoeffModulus::BFVDefault(size_t poly_modulus_degree, sec_level_type sec_level)
+    // {
+    //     if (!MaxBitCount(poly_modulus_degree, sec_level))
+    //     {
+    //         throw invalid_argument("non-standard poly_modulus_degree");
+    //     }
+    //     if (sec_level == sec_level_type::none)
+    //     {
+    //         throw invalid_argument("invalid security level");
+    //     }
 
-        switch (sec_level)
-        {
-        case sec_level_type::tc128:
-            return global_variables::GetDefaultCoeffModulus128().at(poly_modulus_degree);
+    //     switch (sec_level)
+    //     {
+    //     case sec_level_type::tc128:
+    //         return global_variables::GetDefaultCoeffModulus128().at(poly_modulus_degree);
 
-        case sec_level_type::tc192:
-            return global_variables::GetDefaultCoeffModulus192().at(poly_modulus_degree);
+    //     case sec_level_type::tc192:
+    //         return global_variables::GetDefaultCoeffModulus192().at(poly_modulus_degree);
 
-        case sec_level_type::tc256:
-            return global_variables::GetDefaultCoeffModulus256().at(poly_modulus_degree);
+    //     case sec_level_type::tc256:
+    //         return global_variables::GetDefaultCoeffModulus256().at(poly_modulus_degree);
 
-        default:
-            throw runtime_error("invalid security level");
-        }
-    }
+    //     default:
+    //         throw runtime_error("invalid security level");
+    //     }
+    // }
 
     vector<Modulus> CoeffModulus::Create(size_t poly_modulus_degree, vector<int> bit_sizes)
     {

@@ -6,7 +6,7 @@
 #include "seal/encryptionparams.h"
 #include "seal/memorymanager.h"
 #include "seal/modulus.h"
-#include "seal/util/galois.h"
+//#include "seal/util/galois.h"
 #include "seal/util/ntt.h"
 #include "seal/util/pointer.h"
 #include "seal/util/rns.h"
@@ -338,10 +338,10 @@ namespace seal
             /**
             Returns a constant pointer to the GaloisTool.
             */
-            SEAL_NODISCARD inline const util::GaloisTool *galois_tool() const noexcept
-            {
-                return galois_tool_.get();
-            }
+            // SEAL_NODISCARD inline const util::GaloisTool *galois_tool() const noexcept
+            // {
+            //     return galois_tool_.get();
+            // }
 
             /**
             Return a pointer to BFV "Delta", i.e. coefficient modulus divided by
@@ -455,7 +455,7 @@ namespace seal
 
             util::Pointer<util::NTTTables> plain_ntt_tables_;
 
-            util::Pointer<util::GaloisTool> galois_tool_;
+            //util::Pointer<util::GaloisTool> galois_tool_;
 
             util::Pointer<std::uint64_t> total_coeff_modulus_;
 
@@ -627,10 +627,10 @@ namespace seal
         keyswitching to be available, the coefficient modulus parameter must consist
         of at least two prime number factors.
         */
-        SEAL_NODISCARD inline bool using_keyswitching() const noexcept
-        {
-            return using_keyswitching_;
-        }
+        // SEAL_NODISCARD inline bool using_keyswitching() const noexcept
+        // {
+        //     return using_keyswitching_;
+        // }
 
     private:
         /**
@@ -675,6 +675,6 @@ namespace seal
         /**
         Is keyswitching supported by the encryption parameters?
         */
-        bool using_keyswitching_;
+        //bool using_keyswitching_;
     };
 } // namespace seal
