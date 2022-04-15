@@ -15,53 +15,53 @@ using namespace seal::util;
 
 namespace seal
 {
-    void Modulus::save_members(ostream &stream) const
-    {
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    // void Modulus::save_members(ostream &stream) const
+    // {
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            stream.write(reinterpret_cast<const char *>(&value_), sizeof(uint64_t));
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
-    }
+    //         stream.write(reinterpret_cast<const char *>(&value_), sizeof(uint64_t));
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
+    // }
 
-    void Modulus::load_members(istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
-    {
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    // void Modulus::load_members(istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
+    // {
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            uint64_t value;
-            stream.read(reinterpret_cast<char *>(&value), sizeof(uint64_t));
-            set_value(value);
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
-    }
+    //         uint64_t value;
+    //         stream.read(reinterpret_cast<char *>(&value), sizeof(uint64_t));
+    //         set_value(value);
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
+    // }
 
     void Modulus::set_value(uint64_t value)
     {

@@ -4,11 +4,10 @@
 #pragma once
 
 #include "seal/util/defines.h"
-
+#include <ios>
 #if defined(SEAL_USE_ZLIB) || defined(SEAL_USE_ZSTD)
 #include "seal/dynarray.h"
 #include "seal/memorymanager.h"
-#include <ios>
 #include <iostream>
 
 namespace seal

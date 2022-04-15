@@ -7,9 +7,9 @@
 //#include "seal/galoiskeys.h"
 #include "seal/memorymanager.h"
 #include "seal/publickey.h"
-//#include "seal/relinkeys.h"
+#include "seal/relinkeys.h"
 #include "seal/secretkey.h"
-#include "seal/serializable.h"
+//#include "seal/serializable.h"
 #include "seal/util/defines.h"
 #include "seal/util/iterator.h"
 #include <random>
@@ -79,25 +79,25 @@ namespace seal
         directly and is meant to be serialized for the size reduction to have an
         impact.
         */
-        SEAL_NODISCARD inline Serializable<PublicKey> create_public_key() const
-        {
-            return generate_pk(true);
-        }
+        // SEAL_NODISCARD inline Serializable<PublicKey> create_public_key() const
+        // {
+        //     return generate_pk(true);
+        // }
 
         /**
         Generates relinearization keys and stores the result in destination.
         Every time this function is called, new relinearization keys will be
         generated.
 
-        // @param[out] destination The relinearization keys to overwrite with the
-        // generated relinearization keys
-        // @throws std::logic_error if the encryption parameters do not support
-        // keyswitching
-        // */
-        // inline void create_relin_keys(RelinKeys &destination)
-        // {
-        //     destination = create_relin_keys(1, false);
-        // }
+        @param[out] destination The relinearization keys to overwrite with the
+        generated relinearization keys
+        @throws std::logic_error if the encryption parameters do not support
+        keyswitching
+        */
+        inline void create_relin_keys(RelinKeys &destination)
+        {
+            destination = create_relin_keys(1, false);
+        }
 
         /**
         Generates and returns relinearization keys as a serializable object.
@@ -313,14 +313,14 @@ namespace seal
         /**
         Generates new key switching keys for an array of new keys.
         */
-        // void generate_kswitch_keys(
-        //     util::ConstPolyIter new_keys, std::size_t num_keys, KSwitchKeys &destination, bool save_seed = false);
+        void generate_kswitch_keys(
+            util::ConstPolyIter new_keys, std::size_t num_keys, KSwitchKeys &destination, bool save_seed = false);
 
         // /**
         // Generates one key switching key for a new key.
         // */
-        // void generate_one_kswitch_key(
-        //     util::ConstRNSIter new_key, std::vector<PublicKey> &destination, bool save_seed = false);
+        void generate_one_kswitch_key(
+            util::ConstRNSIter new_key, std::vector<PublicKey> &destination, bool save_seed = false);
 
         /**
         Generates and returns the specified number of relinearization keys.
@@ -329,7 +329,7 @@ namespace seal
         @param[in] save_seed If true, save seed instead of a polynomial.
         @throws std::invalid_argument if count is zero or too large
         */
-        //RelinKeys create_relin_keys(std::size_t count, bool save_seed);
+        RelinKeys create_relin_keys(std::size_t count, bool save_seed);
 
         /**
         Generates and returns Galois keys. This function creates specific Galois

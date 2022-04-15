@@ -565,57 +565,57 @@ namespace seal
         8. Other than the +, no other terms have whitespace
         9. If the polynomial is exactly 0, the string "0" is returned
 
-        @throws std::invalid_argument if the plaintext is in NTT transformed form
-        */
-        SEAL_NODISCARD inline std::string to_string() const
-        {
-            if (is_ntt_form())
-            {
-                throw std::invalid_argument("cannot convert NTT transformed plaintext to string");
-            }
-            return util::poly_to_hex_string(data_.cbegin(), coeff_count_, 1);
-        }
+        // @throws std::invalid_argument if the plaintext is in NTT transformed form
+        // */
+        // SEAL_NODISCARD inline std::string to_string() const
+        // {
+        //     if (is_ntt_form())
+        //     {
+        //         throw std::invalid_argument("cannot convert NTT transformed plaintext to string");
+        //     }
+        //     return util::poly_to_hex_string(data_.cbegin(), coeff_count_, 1);
+        // }
 
         /**
         Returns an upper bound on the size of the plaintext, as if it was written
         to an output stream.
 
-        @param[in] compr_mode The compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the size does not fit in the return type
-        */
-        SEAL_NODISCARD inline std::streamoff save_size(
-            compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            std::size_t members_size = Serialization::ComprSizeEstimate(
-                util::add_safe(
-                    sizeof(parms_id_),
-                    sizeof(std::uint64_t), // coeff_count_
-                    sizeof(scale_), util::safe_cast<std::size_t>(data_.save_size(compr_mode_type::none))),
-                compr_mode);
+        // @param[in] compr_mode The compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the size does not fit in the return type
+        // */
+        // SEAL_NODISCARD inline std::streamoff save_size(
+        //     compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     std::size_t members_size = Serialization::ComprSizeEstimate(
+        //         util::add_safe(
+        //             sizeof(parms_id_),
+        //             sizeof(std::uint64_t), // coeff_count_
+        //             sizeof(scale_), util::safe_cast<std::size_t>(data_.save_size(compr_mode_type::none))),
+        //         compr_mode);
 
-            return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
-        }
+        //     return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
+        // }
 
         /**
         Saves the plaintext to an output stream. The output is in binary format
         and not human-readable. The output stream must have the "binary" flag set.
 
-        @param[out] stream The stream to save the plaintext to
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&Plaintext::save_members, this, _1), save_size(compr_mode_type::none), stream, compr_mode,
-                false);
-        }
+        // @param[out] stream The stream to save the plaintext to
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&Plaintext::save_members, this, _1), save_size(compr_mode_type::none), stream, compr_mode,
+        //         false);
+        // }
 
         /**
         Loads a plaintext from an input stream overwriting the current plaintext.
@@ -623,63 +623,63 @@ namespace seal
         parameters is performed. This function should not be used unless the
         plaintext comes from a fully trusted source.
 
-        @param[in] context The SEALContext
-        @param[in] stream The stream to load the plaintext from
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff unsafe_load(const SEALContext &context, std::istream &stream)
-        {
-            using namespace std::placeholders;
-            return Serialization::Load(std::bind(&Plaintext::load_members, this, context, _1, _2), stream, false);
-        }
+        // @param[in] context The SEALContext
+        // @param[in] stream The stream to load the plaintext from
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff unsafe_load(const SEALContext &context, std::istream &stream)
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Load(std::bind(&Plaintext::load_members, this, context, _1, _2), stream, false);
+        // }
 
         /**
         Loads a plaintext from an input stream overwriting the current plaintext.
         The loaded plaintext is verified to be valid for the given SEALContext.
 
-        @param[in] context The SEALContext
-        @param[in] stream The stream to load the plaintext from
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(const SEALContext &context, std::istream &stream)
-        {
-            Plaintext new_data(pool());
-            auto in_size = new_data.unsafe_load(context, stream);
-            if (!is_valid_for(new_data, context))
-            {
-                throw std::logic_error("Plaintext data is invalid");
-            }
-            std::swap(*this, new_data);
-            return in_size;
-        }
+        // @param[in] context The SEALContext
+        // @param[in] stream The stream to load the plaintext from
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(const SEALContext &context, std::istream &stream)
+        // {
+        //     Plaintext new_data(pool());
+        //     auto in_size = new_data.unsafe_load(context, stream);
+        //     if (!is_valid_for(new_data, context))
+        //     {
+        //         throw std::logic_error("Plaintext data is invalid");
+        //     }
+        //     std::swap(*this, new_data);
+        //     return in_size;
+        // }
 
         /**
         Saves the plaintext to a given memory location. The output is in binary
         format and not human-readable.
 
-        @param[out] out The memory location to write the plaintext to
-        @param[in] size The number of bytes available in the given memory location
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if out is null or if size is too small to
-        contain a SEALHeader, or if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&Plaintext::save_members, this, _1), save_size(compr_mode_type::none), out, size, compr_mode,
-                false);
-        }
+        // @param[out] out The memory location to write the plaintext to
+        // @param[in] size The number of bytes available in the given memory location
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if out is null or if size is too small to
+        // contain a SEALHeader, or if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&Plaintext::save_members, this, _1), save_size(compr_mode_type::none), out, size, compr_mode,
+        //         false);
+        // }
 
         /**
         Loads a plaintext from a given memory location overwriting the current
@@ -687,47 +687,47 @@ namespace seal
         encryption parameters is performed. This function should not be used
         unless the plaintext comes from a fully trusted source.
 
-        @param[in] context The SEALContext
-        @param[in] in The memory location to load the plaintext from
-        @param[in] size The number of bytes available in the given memory location
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::invalid_argument if in is null or if size is too small to
-        contain a SEALHeader
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff unsafe_load(const SEALContext &context, const seal_byte *in, std::size_t size)
-        {
-            using namespace std::placeholders;
-            return Serialization::Load(std::bind(&Plaintext::load_members, this, context, _1, _2), in, size, false);
-        }
+        // @param[in] context The SEALContext
+        // @param[in] in The memory location to load the plaintext from
+        // @param[in] size The number of bytes available in the given memory location
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::invalid_argument if in is null or if size is too small to
+        // contain a SEALHeader
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff unsafe_load(const SEALContext &context, const seal_byte *in, std::size_t size)
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Load(std::bind(&Plaintext::load_members, this, context, _1, _2), in, size, false);
+        // }
 
         /**
         Loads a plaintext from an input stream overwriting the current plaintext.
         The loaded plaintext is verified to be valid for the given SEALContext.
 
-        @param[in] context The SEALContext
-        @param[in] in The memory location to load the PublicKey from
-        @param[in] size The number of bytes available in the given memory location
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::invalid_argument if in is null or if size is too small to
-        contain a SEALHeader
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(const SEALContext &context, const seal_byte *in, std::size_t size)
-        {
-            Plaintext new_data(pool());
-            auto in_size = new_data.unsafe_load(context, in, size);
-            if (!is_valid_for(new_data, context))
-            {
-                throw std::logic_error("Plaintext data is invalid");
-            }
-            std::swap(*this, new_data);
-            return in_size;
-        }
+        // @param[in] context The SEALContext
+        // @param[in] in The memory location to load the PublicKey from
+        // @param[in] size The number of bytes available in the given memory location
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::invalid_argument if in is null or if size is too small to
+        // contain a SEALHeader
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(const SEALContext &context, const seal_byte *in, std::size_t size)
+        // {
+        //     Plaintext new_data(pool());
+        //     auto in_size = new_data.unsafe_load(context, in, size);
+        //     if (!is_valid_for(new_data, context))
+        //     {
+        //         throw std::logic_error("Plaintext data is invalid");
+        //     }
+        //     std::swap(*this, new_data);
+        //     return in_size;
+        // }
 
         /**
         Returns whether the plaintext is in NTT form.
@@ -792,9 +792,9 @@ namespace seal
         struct PlaintextPrivateHelper;
 
     private:
-        void save_members(std::ostream &stream) const;
+        //void save_members(std::ostream &stream) const;
 
-        void load_members(const SEALContext &context, std::istream &stream, SEALVersion version);
+        //void load_members(const SEALContext &context, std::istream &stream, SEALVersion version);
 
         parms_id_type parms_id_ = parms_id_zero;
 

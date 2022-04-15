@@ -30,7 +30,6 @@ int main(void) {
     size_t slot_count = encoder.slot_count();
     cout << "Number of slots: " << slot_count << endl;
 
-
     cout << "Encryption Start" << endl;
     Plaintext plain;
     encoder.encode(5, scale, plain);
@@ -46,5 +45,7 @@ int main(void) {
     cout << "Decryption result:" << endl;
     print_vector(result, 3, 7);
 
-
+    SecretKey* keypointer;
+    keypointer = &secret_key;
+    cout << keypointer << endl;
 }

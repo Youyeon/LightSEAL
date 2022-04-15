@@ -627,10 +627,10 @@ namespace seal
         keyswitching to be available, the coefficient modulus parameter must consist
         of at least two prime number factors.
         */
-        // SEAL_NODISCARD inline bool using_keyswitching() const noexcept
-        // {
-        //     return using_keyswitching_;
-        // }
+        SEAL_NODISCARD inline bool using_keyswitching() const noexcept
+        {
+            return using_keyswitching_;
+        }
 
     private:
         /**
@@ -675,6 +675,6 @@ namespace seal
         /**
         Is keyswitching supported by the encryption parameters?
         */
-        //bool using_keyswitching_;
+        bool using_keyswitching_;
     };
 } // namespace seal

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "seal/serialization.h"
+//#include "seal/serialization.h"
 #include "seal/version.h"
 #include "seal/util/defines.h"
 #include "seal/util/hestdparms.h"
@@ -12,7 +12,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
+//#include <iostream>
 #include <vector>
 
 namespace seal
@@ -267,91 +267,91 @@ namespace seal
         Returns an upper bound on the size of the Modulus, as if it was
         written to an output stream.
 
-        @param[in] compr_mode The compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the size does not fit in the return type
-        */
-        SEAL_NODISCARD inline std::streamoff save_size(
-            compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            std::size_t members_size = Serialization::ComprSizeEstimate(util::add_safe(sizeof(value_)), compr_mode);
+        // @param[in] compr_mode The compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the size does not fit in the return type
+        // */
+        // SEAL_NODISCARD inline std::streamoff save_size(
+        //     compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     std::size_t members_size = Serialization::ComprSizeEstimate(util::add_safe(sizeof(value_)), compr_mode);
 
-            return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
-        }
+        //     return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
+        // }
 
         /**
         Saves the Modulus to an output stream. The output is in binary format
         and not human-readable. The output stream must have the "binary" flag set.
 
-        @param[out] stream The stream to save the Modulus to
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&Modulus::save_members, this, _1), save_size(compr_mode_type::none), stream, compr_mode,
-                false);
-        }
+        // @param[out] stream The stream to save the Modulus to
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&Modulus::save_members, this, _1), save_size(compr_mode_type::none), stream, compr_mode,
+        //         false);
+        // }
 
         /**
         Loads a Modulus from an input stream overwriting the current Modulus.
 
-        @param[in] stream The stream to load the Modulus from
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(std::istream &stream)
-        {
-            using namespace std::placeholders;
-            return Serialization::Load(std::bind(&Modulus::load_members, this, _1, _2), stream, false);
-        }
+        // @param[in] stream The stream to load the Modulus from
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(std::istream &stream)
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Load(std::bind(&Modulus::load_members, this, _1, _2), stream, false);
+        // }
 
         /**
         Saves the Modulus to a given memory location. The output is in binary
         format and not human-readable.
 
-        @param[out] out The memory location to write the Modulus to
-        @param[in] size The number of bytes available in the given memory location
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if out is null or if size is too small to
-        contain a SEALHeader, or if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&Modulus::save_members, this, _1), save_size(compr_mode_type::none), out, size, compr_mode,
-                false);
-        }
+        // @param[out] out The memory location to write the Modulus to
+        // @param[in] size The number of bytes available in the given memory location
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if out is null or if size is too small to
+        // contain a SEALHeader, or if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&Modulus::save_members, this, _1), save_size(compr_mode_type::none), out, size, compr_mode,
+        //         false);
+        // }
 
         /**
         Loads a Modulus from a given memory location overwriting the current
         Modulus.
 
-        @param[in] in The memory location to load the Modulus from
-        @param[in] size The number of bytes available in the given memory location
-        @throws std::invalid_argument if in is null or if size is too small to
-        contain a SEALHeader
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(const seal_byte *in, std::size_t size)
-        {
-            using namespace std::placeholders;
-            return Serialization::Load(std::bind(&Modulus::load_members, this, _1, _2), in, size, false);
-        }
+        // @param[in] in The memory location to load the Modulus from
+        // @param[in] size The number of bytes available in the given memory location
+        // @throws std::invalid_argument if in is null or if size is too small to
+        // contain a SEALHeader
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(const seal_byte *in, std::size_t size)
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Load(std::bind(&Modulus::load_members, this, _1, _2), in, size, false);
+        // }
 
         /**
         Reduces a given unsigned integer modulo this modulus.
@@ -364,9 +364,9 @@ namespace seal
     private:
         void set_value(std::uint64_t value);
 
-        void save_members(std::ostream &stream) const;
+        //void save_members(std::ostream &stream) const;
 
-        void load_members(std::istream &stream, SEALVersion version);
+        //void load_members(std::istream &stream, SEALVersion version);
 
         std::uint64_t value_ = 0;
 

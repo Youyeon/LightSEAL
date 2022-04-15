@@ -6,7 +6,7 @@
 #include "seal/util/common.h"
 #include "seal/util/fips202.h"
 #include <algorithm>
-#include <iostream>
+//#include <iostream>
 #include <random>
 #if (SEAL_SYSTEM == SEAL_SYSTEM_WINDOWS)
 #include <Windows.h>
@@ -96,66 +96,66 @@ namespace seal
 #endif
     }
 
-    void UniformRandomGeneratorInfo::save_members(ostream &stream) const
-    {
-        // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    // void UniformRandomGeneratorInfo::save_members(ostream &stream) const
+    // {
+    //     // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            stream.write(reinterpret_cast<const char *>(&type_), sizeof(prng_type));
-            stream.write(reinterpret_cast<const char *>(seed_.data()), prng_seed_byte_count);
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
-    }
+    //         stream.write(reinterpret_cast<const char *>(&type_), sizeof(prng_type));
+    //         stream.write(reinterpret_cast<const char *>(seed_.data()), prng_seed_byte_count);
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
+    // }
 
-    void UniformRandomGeneratorInfo::load_members(istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
-    {
-        // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    // void UniformRandomGeneratorInfo::load_members(istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
+    // {
+    //     // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            UniformRandomGeneratorInfo info;
+    //         UniformRandomGeneratorInfo info;
 
-            // Read the PRNG type
-            stream.read(reinterpret_cast<char *>(&info.type_), sizeof(prng_type));
-            if (!info.has_valid_prng_type())
-            {
-                throw logic_error("prng_type is invalid");
-            }
+    //         // Read the PRNG type
+    //         stream.read(reinterpret_cast<char *>(&info.type_), sizeof(prng_type));
+    //         if (!info.has_valid_prng_type())
+    //         {
+    //             throw logic_error("prng_type is invalid");
+    //         }
 
-            // Read the seed data
-            stream.read(reinterpret_cast<char *>(info.seed_.data()), prng_seed_byte_count);
+    //         // Read the seed data
+    //         stream.read(reinterpret_cast<char *>(info.seed_.data()), prng_seed_byte_count);
 
-            swap(*this, info);
+    //         swap(*this, info);
 
-            stream.exceptions(old_except_mask);
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
-    }
+    //         stream.exceptions(old_except_mask);
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
+    // }
 
     shared_ptr<UniformRandomGenerator> UniformRandomGeneratorInfo::make_prng() const
     {

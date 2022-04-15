@@ -145,213 +145,214 @@ namespace seal
         }
     }
 
-    streamoff Ciphertext::save_size(compr_mode_type compr_mode) const
-    {
-        // We need to consider two cases: seeded and unseeded; these have very
-        // different size characteristics and we need the exact size when
-        // compr_mode is compr_mode_type::none.
-        size_t data_size;
-        if (has_seed_marker())
-        {
-            // Create a temporary aliased DynArray of smaller size
-            DynArray<ct_coeff_type> alias_data(
-                Pointer<ct_coeff_type>::Aliasing(const_cast<ct_coeff_type *>(data_.cbegin())), data_.size() / 2, false,
-                data_.pool());
+    // streamoff Ciphertext::save_size(compr_mode_type compr_mode) const
+    // {
+    //     // We need to consider two cases: seeded and unseeded; these have very
+    //     // different size characteristics and we need the exact size when
+    //     // compr_mode is compr_mode_type::none.
+    //     size_t data_size;
+    //     if (has_seed_marker())
+    //     {
+    //         // Create a temporary aliased DynArray of smaller size
+    //         DynArray<ct_coeff_type> alias_data(
+    //             Pointer<ct_coeff_type>::Aliasing(const_cast<ct_coeff_type *>(data_.cbegin())), data_.size() / 2, false,
+    //             data_.pool());
 
-            data_size = add_safe(
-                safe_cast<size_t>(alias_data.save_size(compr_mode_type::none)),                    // data_(0)
-                static_cast<size_t>(UniformRandomGeneratorInfo::SaveSize(compr_mode_type::none))); // seed
-        }
-        else
-        {
-            data_size = safe_cast<size_t>(data_.save_size(compr_mode_type::none)); // data_
-        }
+    //         data_size = add_safe(
+    //             safe_cast<size_t>(alias_data.save_size(compr_mode_type::none)),                    // data_(0)
+    //             static_cast<size_t>(UniformRandomGeneratorInfo::SaveSize(compr_mode_type::none))); // seed
+    //     }
+    //     else
+    //     {
+    //         data_size = safe_cast<size_t>(data_.save_size(compr_mode_type::none)); // data_
+    //     }
 
-        size_t members_size = Serialization::ComprSizeEstimate(
-            add_safe(
-                sizeof(parms_id_),
-                sizeof(seal_byte), // is_ntt_form_
-                sizeof(uint64_t),  // size_
-                sizeof(uint64_t),  // poly_modulus_degree_
-                sizeof(uint64_t),  // coeff_modulus_size_
-                sizeof(scale_), data_size),
-            compr_mode);
+    //     size_t members_size = Serialization::ComprSizeEstimate(
+    //         add_safe(
+    //             sizeof(parms_id_),
+    //             sizeof(seal_byte), // is_ntt_form_
+    //             sizeof(uint64_t),  // size_
+    //             sizeof(uint64_t),  // poly_modulus_degree_
+    //             sizeof(uint64_t),  // coeff_modulus_size_
+    //             sizeof(scale_), data_size),
+    //         compr_mode);
 
-        return safe_cast<streamoff>(add_safe(sizeof(Serialization::SEALHeader), members_size));
-    }
+    //     return safe_cast<streamoff>(add_safe(sizeof(Serialization::SEALHeader), members_size));
+    // }
 
-    void Ciphertext::save_members(ostream &stream) const
-    {
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    // void Ciphertext::save_members(ostream &stream) const
+    // {
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            stream.write(reinterpret_cast<const char *>(&parms_id_), sizeof(parms_id_type));
-            seal_byte is_ntt_form_byte = static_cast<seal_byte>(is_ntt_form_);
-            stream.write(reinterpret_cast<const char *>(&is_ntt_form_byte), sizeof(seal_byte));
-            uint64_t size64 = safe_cast<uint64_t>(size_);
-            stream.write(reinterpret_cast<const char *>(&size64), sizeof(uint64_t));
-            uint64_t poly_modulus_degree64 = safe_cast<uint64_t>(poly_modulus_degree_);
-            stream.write(reinterpret_cast<const char *>(&poly_modulus_degree64), sizeof(uint64_t));
-            uint64_t coeff_modulus_size64 = safe_cast<uint64_t>(coeff_modulus_size_);
-            stream.write(reinterpret_cast<const char *>(&coeff_modulus_size64), sizeof(uint64_t));
-            stream.write(reinterpret_cast<const char *>(&scale_), sizeof(double));
+    //         stream.write(reinterpret_cast<const char *>(&parms_id_), sizeof(parms_id_type));
+    //         seal_byte is_ntt_form_byte = static_cast<seal_byte>(is_ntt_form_);
+    //         stream.write(reinterpret_cast<const char *>(&is_ntt_form_byte), sizeof(seal_byte));
+    //         uint64_t size64 = safe_cast<uint64_t>(size_);
+    //         stream.write(reinterpret_cast<const char *>(&size64), sizeof(uint64_t));
+    //         uint64_t poly_modulus_degree64 = safe_cast<uint64_t>(poly_modulus_degree_);
+    //         stream.write(reinterpret_cast<const char *>(&poly_modulus_degree64), sizeof(uint64_t));
+    //         uint64_t coeff_modulus_size64 = safe_cast<uint64_t>(coeff_modulus_size_);
+    //         stream.write(reinterpret_cast<const char *>(&coeff_modulus_size64), sizeof(uint64_t));
+    //         stream.write(reinterpret_cast<const char *>(&scale_), sizeof(double));
 
-            if (has_seed_marker())
-            {
-                UniformRandomGeneratorInfo info;
-                size_t info_size = static_cast<size_t>(UniformRandomGeneratorInfo::SaveSize(compr_mode_type::none));
-                info.load(reinterpret_cast<const seal_byte *>(data(1) + 1), info_size);
+    //         if (has_seed_marker())
+    //         {
+    //             UniformRandomGeneratorInfo info;
+    //             size_t info_size = static_cast<size_t>(UniformRandomGeneratorInfo::SaveSize(compr_mode_type::none));
+    //             info.load(reinterpret_cast<const seal_byte *>(data(1) + 1), info_size);
 
-                size_t data_size = data_.size();
-                size_t half_size = data_size / 2;
-                // Save_members must be a const method.
-                // Create an alias of data_; must be handled with care.
-                DynArray<ct_coeff_type> alias_data(data_.pool_);
-                alias_data.size_ = half_size;
-                alias_data.capacity_ = half_size;
-                auto alias_ptr = util::Pointer<ct_coeff_type>::Aliasing(const_cast<ct_coeff_type *>(data_.cbegin()));
-                swap(alias_data.data_, alias_ptr);
-                alias_data.save(stream, compr_mode_type::none);
+    //             size_t data_size = data_.size();
+    //             size_t half_size = data_size / 2;
+    //             // Save_members must be a const method.
+    //             // Create an alias of data_; must be handled with care.
+    //             DynArray<ct_coeff_type> alias_data(data_.pool_);
+    //             alias_data.size_ = half_size;
+    //             alias_data.capacity_ = half_size;
+    //             auto alias_ptr = util::Pointer<ct_coeff_type>::Aliasing(const_cast<ct_coeff_type *>(data_.cbegin()));
+    //             swap(alias_data.data_, alias_ptr);
+    //             alias_data.save(stream, compr_mode_type::none);
 
-                // Save the UniformRandomGeneratorInfo
-                info.save(stream, compr_mode_type::none);
-            }
-            else
-            {
-                // Save the DynArray
-                data_.save(stream, compr_mode_type::none);
-            }
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
-    }
+    //             // Save the UniformRandomGeneratorInfo
+    //             info.save(stream, compr_mode_type::none);
+    //         }
+    //         else
+    //         {
+    //             // Save the DynArray
+    //             data_.save(stream, compr_mode_type::none);
+    //         }
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
+    // }
 
-    void Ciphertext::load_members(const SEALContext &context, istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
-    {
-        // Verify parameters
-        if (!context.parameters_set())
-        {
-            throw invalid_argument("encryption parameters are not set correctly");
-        }
+    // void Ciphertext::load_members(const SEALContext &context, istream &stream, SEAL_MAYBE_UNUSED SEALVersion version)
+    // {
+    //     // Verify parameters
+    //     if (!context.parameters_set())
+    //     {
+    //         throw invalid_argument("encryption parameters are not set correctly");
+    //     }
 
-        Ciphertext new_data(data_.pool());
+    //     Ciphertext new_data(data_.pool());
 
-        auto old_except_mask = stream.exceptions();
-        try
-        {
-            // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
-            stream.exceptions(ios_base::badbit | ios_base::failbit);
+    //     auto old_except_mask = stream.exceptions();
+    //     try
+    //     {
+    //         // Throw exceptions on std::ios_base::badbit and std::ios_base::failbit
+    //         stream.exceptions(ios_base::badbit | ios_base::failbit);
 
-            parms_id_type parms_id{};
-            stream.read(reinterpret_cast<char *>(&parms_id), sizeof(parms_id_type));
-            seal_byte is_ntt_form_byte;
-            stream.read(reinterpret_cast<char *>(&is_ntt_form_byte), sizeof(seal_byte));
-            uint64_t size64 = 0;
-            stream.read(reinterpret_cast<char *>(&size64), sizeof(uint64_t));
-            uint64_t poly_modulus_degree64 = 0;
-            stream.read(reinterpret_cast<char *>(&poly_modulus_degree64), sizeof(uint64_t));
-            uint64_t coeff_modulus_size64 = 0;
-            stream.read(reinterpret_cast<char *>(&coeff_modulus_size64), sizeof(uint64_t));
-            double scale = 0;
-            stream.read(reinterpret_cast<char *>(&scale), sizeof(double));
+    //         parms_id_type parms_id{};
+    //         stream.read(reinterpret_cast<char *>(&parms_id), sizeof(parms_id_type));
+    //         seal_byte is_ntt_form_byte;
+    //         stream.read(reinterpret_cast<char *>(&is_ntt_form_byte), sizeof(seal_byte));
+    //         uint64_t size64 = 0;
+    //         stream.read(reinterpret_cast<char *>(&size64), sizeof(uint64_t));
+    //         uint64_t poly_modulus_degree64 = 0;
+    //         stream.read(reinterpret_cast<char *>(&poly_modulus_degree64), sizeof(uint64_t));
+    //         uint64_t coeff_modulus_size64 = 0;
+    //         stream.read(reinterpret_cast<char *>(&coeff_modulus_size64), sizeof(uint64_t));
+    //         double scale = 0;
+    //         stream.read(reinterpret_cast<char *>(&scale), sizeof(double));
 
-            // Set values already at this point for the metadata validity check
-            new_data.parms_id_ = parms_id;
-            new_data.is_ntt_form_ = (is_ntt_form_byte == seal_byte{}) ? false : true;
-            new_data.size_ = safe_cast<size_t>(size64);
-            new_data.poly_modulus_degree_ = safe_cast<size_t>(poly_modulus_degree64);
-            new_data.coeff_modulus_size_ = safe_cast<size_t>(coeff_modulus_size64);
-            new_data.scale_ = scale;
+    //         // Set values already at this point for the metadata validity check
+    //         new_data.parms_id_ = parms_id;
+    //         new_data.is_ntt_form_ = (is_ntt_form_byte == seal_byte{}) ? false : true;
+    //         new_data.size_ = safe_cast<size_t>(size64);
+    //         new_data.poly_modulus_degree_ = safe_cast<size_t>(poly_modulus_degree64);
+    //         new_data.coeff_modulus_size_ = safe_cast<size_t>(coeff_modulus_size64);
+    //         new_data.scale_ = scale;
 
-            // Checking the validity of loaded metadata
-            // Note: We allow pure key levels here! This is to allow load_members
-            // to be used also when loading derived objects like PublicKey. This
-            // further means that functions reading in Ciphertext objects must check
-            // that for those use-cases the Ciphertext truly is at the data level
-            // if it is supposed to be. In other words, one cannot assume simply
-            // based on load_members succeeding that the Ciphertext is valid for
-            // computations.
-            if (!is_metadata_valid_for(new_data, context, true))
-            {
-                throw logic_error("ciphertext data is invalid");
-            }
+    //         // Checking the validity of loaded metadata
+    //         // Note: We allow pure key levels here! This is to allow load_members
+    //         // to be used also when loading derived objects like PublicKey. This
+    //         // further means that functions reading in Ciphertext objects must check
+    //         // that for those use-cases the Ciphertext truly is at the data level
+    //         // if it is supposed to be. In other words, one cannot assume simply
+    //         // based on load_members succeeding that the Ciphertext is valid for
+    //         // computations.
+    //         if (!is_metadata_valid_for(new_data, context, true))
+    //         {
+    //             throw logic_error("ciphertext data is invalid");
+    //         }
 
-            // Compute the total uint64 count required and reserve memory.
-            // Note that this must be done after the metadata is checked for validity.
-            auto total_uint64_count =
-                mul_safe(new_data.size_, new_data.poly_modulus_degree_, new_data.coeff_modulus_size_);
+    //         // Compute the total uint64 count required and reserve memory.
+    //         // Note that this must be done after the metadata is checked for validity.
+    //         auto total_uint64_count =
+    //             mul_safe(new_data.size_, new_data.poly_modulus_degree_, new_data.coeff_modulus_size_);
 
-            // Reserve memory for the entire (expected) ciphertext data
-            new_data.data_.reserve(total_uint64_count);
+    //         // Reserve memory for the entire (expected) ciphertext data
+    //         new_data.data_.reserve(total_uint64_count);
 
-            // Load the data. Note that we are supplying also the expected maximum
-            // size of the loaded DynArray. This is an important security measure to
-            // prevent a malformed DynArray from causing arbitrarily large memory
-            // allocations.
-            new_data.data_.load(stream, total_uint64_count);
+    //         // Load the data. Note that we are supplying also the expected maximum
+    //         // size of the loaded DynArray. This is an important security measure to
+    //         // prevent a malformed DynArray from causing arbitrarily large memory
+    //         // allocations.
+    //         new_data.data_.load(stream, total_uint64_count);
 
-            // Expected buffer size in the seeded case
-            auto seeded_uint64_count = poly_modulus_degree64 * coeff_modulus_size64;
+    //         // Expected buffer size in the seeded case
+    //         auto seeded_uint64_count = poly_modulus_degree64 * coeff_modulus_size64;
 
-            // This is the case where we need to expand a seed, otherwise full
-            // ciphertext data was already (possibly) loaded and we are done
-            if (unsigned_eq(new_data.data_.size(), seeded_uint64_count))
-            {
-                // Single polynomial size data was loaded, so we are in the seeded
-                // ciphertext case. Next load the UniformRandomGeneratorInfo.
-                UniformRandomGeneratorInfo prng_info;
+    //         // This is the case where we need to expand a seed, otherwise full
+    //         // ciphertext data was already (possibly) loaded and we are done
+    //         if (unsigned_eq(new_data.data_.size(), seeded_uint64_count))
+    //         {
+    //             // Single polynomial size data was loaded, so we are in the seeded
+    //             // ciphertext case. Next load the UniformRandomGeneratorInfo.
+    //             UniformRandomGeneratorInfo prng_info;
 
-                if (version.major == 3 && version.minor >= 6)
-                {
-                    prng_info.load(stream);
-                }
-                else if (version.major == 3 && version.minor >= 4)
-                {
-                    // We only need to load the hash value; only Blake2xb is supported
-                    prng_info.type() = prng_type::blake2xb;
-                    stream.read(reinterpret_cast<char *>(&prng_info.seed()), prng_seed_byte_count);
-                }
-                else
-                {
-                    // seeded ciphertexts were not implemented before 3.4
-                    throw logic_error("incompatible version");
-                }
+    //             if (version.major == 3 && version.minor >= 6)
+    //             {
+    //                 prng_info.load(stream);
+    //             }
+    //             else if (version.major == 3 && version.minor >= 4)
+    //             {
+    //                 // We only need to load the hash value; only Blake2xb is supported
+    //                 prng_info.type() = prng_type::blake2xb;
+    //                 stream.read(reinterpret_cast<char *>(&prng_info.seed()), prng_seed_byte_count);
+    //             }
+    //             else
+    //             {
+    //                 // seeded ciphertexts were not implemented before 3.4
+    //                 throw logic_error("incompatible version");
+    //             }
 
-                // Set up a UniformRandomGenerator and expand
-                new_data.data_.resize(total_uint64_count);
-                new_data.expand_seed(context, prng_info, version);
-            }
+    //             // Set up a UniformRandomGenerator and expand
+    //             new_data.data_.resize(total_uint64_count);
+    //             new_data.expand_seed(context, prng_info, version);
+    //         }
 
-            // Verify that the buffer is correct
-            if (!is_buffer_valid(new_data))
-            {
-                throw logic_error("ciphertext data is invalid");
-            }
-        }
-        catch (const ios_base::failure &)
-        {
-            stream.exceptions(old_except_mask);
-            throw runtime_error("I/O error");
-        }
-        catch (...)
-        {
-            stream.exceptions(old_except_mask);
-            throw;
-        }
-        stream.exceptions(old_except_mask);
+    //         // Verify that the buffer is correct
+    //         if (!is_buffer_valid(new_data))
+    //         {
+    //             throw logic_error("ciphertext data is invalid");
+    //         }
+    //     }
+    //     catch (const ios_base::failure &)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw runtime_error("I/O error");
+    //     }
+    //     catch (...)
+    //     {
+    //         stream.exceptions(old_except_mask);
+    //         throw;
+    //     }
+    //     stream.exceptions(old_except_mask);
 
-        swap(*this, new_data);
-    }
+    //     swap(*this, new_data);
+    // }
+
 } // namespace seal

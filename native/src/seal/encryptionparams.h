@@ -6,14 +6,14 @@
 #include "seal/memorymanager.h"
 #include "seal/modulus.h"
 #include "seal/randomgen.h"
-#include "seal/serialization.h"
+//#include "seal/serialization.h"
 #include "seal/version.h"
 #include "seal/util/defines.h"
 #include "seal/util/globals.h"
 #include "seal/util/hash.h"
 #include "seal/util/ztools.h"
 #include <functional>
-#include <iostream>
+//#include <iostream>
 #include <memory>
 #include <numeric>
 
@@ -335,114 +335,114 @@ namespace seal
         Returns an upper bound on the size of the EncryptionParameters, as if it
         was written to an output stream.
 
-        @param[in] compr_mode The compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the size does not fit in the return type
-        */
-        SEAL_NODISCARD inline std::streamoff save_size(
-            compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            std::size_t coeff_modulus_total_size =
-                coeff_modulus_.empty()
-                    ? std::size_t(0)
-                    : util::safe_cast<std::size_t>(coeff_modulus_[0].save_size(compr_mode_type::none));
-            coeff_modulus_total_size = util::mul_safe(coeff_modulus_total_size, coeff_modulus_.size());
+        // @param[in] compr_mode The compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the size does not fit in the return type
+        // */
+        // SEAL_NODISCARD inline std::streamoff save_size(
+        //     compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     std::size_t coeff_modulus_total_size =
+        //         coeff_modulus_.empty()
+        //             ? std::size_t(0)
+        //             : util::safe_cast<std::size_t>(coeff_modulus_[0].save_size(compr_mode_type::none));
+        //     coeff_modulus_total_size = util::mul_safe(coeff_modulus_total_size, coeff_modulus_.size());
 
-            std::size_t members_size = Serialization::ComprSizeEstimate(
-                util::add_safe(
-                    sizeof(scheme_),
-                    sizeof(std::uint64_t), // poly_modulus_degree_
-                    sizeof(std::uint64_t), // coeff_modulus_size
-                    coeff_modulus_total_size,
-                    util::safe_cast<std::size_t>(plain_modulus_.save_size(compr_mode_type::none))),
-                compr_mode);
+        //     std::size_t members_size = Serialization::ComprSizeEstimate(
+        //         util::add_safe(
+        //             sizeof(scheme_),
+        //             sizeof(std::uint64_t), // poly_modulus_degree_
+        //             sizeof(std::uint64_t), // coeff_modulus_size
+        //             coeff_modulus_total_size,
+        //             util::safe_cast<std::size_t>(plain_modulus_.save_size(compr_mode_type::none))),
+        //         compr_mode);
 
-            return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
-        }
+        //     return util::safe_cast<std::streamoff>(util::add_safe(sizeof(Serialization::SEALHeader), members_size));
+        // }
 
         /**
         Saves EncryptionParameters to an output stream. The output is in binary
         format and is not human-readable. The output stream must have the "binary"
         flag set.
 
-        @param[out] stream The stream to save the EncryptionParameters to
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&EncryptionParameters::save_members, this, _1), save_size(compr_mode_type::none), stream,
-                compr_mode, false);
-        }
+        // @param[out] stream The stream to save the EncryptionParameters to
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     std::ostream &stream, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&EncryptionParameters::save_members, this, _1), save_size(compr_mode_type::none), stream,
+        //         compr_mode, false);
+        // }
 
         /**
         Loads EncryptionParameters from an input stream overwriting the current
         EncryptionParameters.
 
-        @param[in] stream The stream to load the EncryptionParameters from
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(std::istream &stream)
-        {
-            using namespace std::placeholders;
-            EncryptionParameters new_parms(scheme_type::none);
-            auto in_size =
-                Serialization::Load(std::bind(&EncryptionParameters::load_members, &new_parms, _1, _2), stream, false);
-            std::swap(*this, new_parms);
-            return in_size;
-        }
+        // @param[in] stream The stream to load the EncryptionParameters from
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(std::istream &stream)
+        // {
+        //     using namespace std::placeholders;
+        //     EncryptionParameters new_parms(scheme_type::none);
+        //     auto in_size =
+        //         Serialization::Load(std::bind(&EncryptionParameters::load_members, &new_parms, _1, _2), stream, false);
+        //     std::swap(*this, new_parms);
+        //     return in_size;
+        // }
 
         /**
         Saves EncryptionParameters to a given memory location. The output is in
         binary format and is not human-readable.
 
-        @param[out] out The memory location to write the EncryptionParameters to
-        @param[in] size The number of bytes available in the given memory location
-        @param[in] compr_mode The desired compression mode
-        @throws std::invalid_argument if out is null or if size is too small to
-        contain a SEALHeader, or if the compression mode is not supported
-        @throws std::logic_error if the data to be saved is invalid, or if
-        compression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff save(
-            seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
-        {
-            using namespace std::placeholders;
-            return Serialization::Save(
-                std::bind(&EncryptionParameters::save_members, this, _1), save_size(compr_mode_type::none), out, size,
-                compr_mode, false);
-        }
+        // @param[out] out The memory location to write the EncryptionParameters to
+        // @param[in] size The number of bytes available in the given memory location
+        // @param[in] compr_mode The desired compression mode
+        // @throws std::invalid_argument if out is null or if size is too small to
+        // contain a SEALHeader, or if the compression mode is not supported
+        // @throws std::logic_error if the data to be saved is invalid, or if
+        // compression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff save(
+        //     seal_byte *out, std::size_t size, compr_mode_type compr_mode = Serialization::compr_mode_default) const
+        // {
+        //     using namespace std::placeholders;
+        //     return Serialization::Save(
+        //         std::bind(&EncryptionParameters::save_members, this, _1), save_size(compr_mode_type::none), out, size,
+        //         compr_mode, false);
+        // }
 
         /**
         Loads EncryptionParameters from a given memory location overwriting the
         current EncryptionParameters.
 
-        @param[in] in The memory location to load the EncryptionParameters from
-        @param[in] size The number of bytes available in the given memory location
-        @throws std::invalid_argument if in is null or if size is too small to
-        contain a SEALHeader
-        @throws std::logic_error if the data cannot be loaded by this version of
-        Microsoft SEAL, if the loaded data is invalid, or if decompression failed
-        @throws std::runtime_error if I/O operations failed
-        */
-        inline std::streamoff load(const seal_byte *in, std::size_t size)
-        {
-            using namespace std::placeholders;
-            EncryptionParameters new_parms(scheme_type::none);
-            auto in_size = Serialization::Load(
-                std::bind(&EncryptionParameters::load_members, &new_parms, _1, _2), in, size, false);
-            std::swap(*this, new_parms);
-            return in_size;
-        }
+        // @param[in] in The memory location to load the EncryptionParameters from
+        // @param[in] size The number of bytes available in the given memory location
+        // @throws std::invalid_argument if in is null or if size is too small to
+        // contain a SEALHeader
+        // @throws std::logic_error if the data cannot be loaded by this version of
+        // Microsoft SEAL, if the loaded data is invalid, or if decompression failed
+        // @throws std::runtime_error if I/O operations failed
+        // */
+        // inline std::streamoff load(const seal_byte *in, std::size_t size)
+        // {
+        //     using namespace std::placeholders;
+        //     EncryptionParameters new_parms(scheme_type::none);
+        //     auto in_size = Serialization::Load(
+        //         std::bind(&EncryptionParameters::load_members, &new_parms, _1, _2), in, size, false);
+        //     std::swap(*this, new_parms);
+        //     return in_size;
+        // }
 
         /**
         Enables access to private members of seal::EncryptionParameters for SEAL_C.
@@ -482,9 +482,9 @@ namespace seal
 
         void compute_parms_id();
 
-        void save_members(std::ostream &stream) const;
+        //void save_members(std::ostream &stream) const;
 
-        void load_members(std::istream &stream, SEALVersion version);
+        //void load_members(std::istream &stream, SEALVersion version);
 
         MemoryPoolHandle pool_ = MemoryManager::GetPool();
 
