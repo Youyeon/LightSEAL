@@ -23,6 +23,8 @@ int main(void) {
     auto secret_key = keygen.secret_key();
     PublicKey public_key;
     keygen.create_public_key(public_key);
+    RelinKeys relin_keys;
+    keygen.create_relin_keys(relin_keys);
     Encryptor encryptor(context, public_key);
     Decryptor decryptor(context, secret_key);
 

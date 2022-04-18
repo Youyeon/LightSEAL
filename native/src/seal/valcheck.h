@@ -12,8 +12,8 @@ namespace seal
     class Ciphertext;
     class SecretKey;
     class PublicKey;
-     class KSwitchKeys;
-     class RelinKeys;
+    class KSwitchKeys;
+    class RelinKeys;
     // class GaloisKeys;
 
     /**

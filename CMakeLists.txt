@@ -23,6 +23,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type (CMAKE_BUILD_TYPE): ${CMAKE_BUILD_TYPE}")
 
+set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 project(SEAL VERSION 3.7.2 LANGUAGES CXX C)
 
 ########################
@@ -83,6 +84,8 @@ endif()
 
 # Required files and directories
 include(GNUInstallDirs)
+set(CMAKE_INSTALL_OLDINCLUDEDIR "/opt/intel/sgxsdk/include")
+
 
 # Runtime path setup
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")

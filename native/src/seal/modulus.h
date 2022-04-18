@@ -8,7 +8,7 @@
 #include "seal/util/defines.h"
 #include "seal/util/hestdparms.h"
 #include "seal/util/uintcore.h"
-#include "seal/util/ztools.h"
+//#include "seal/util/ztools.h"
 #include <array>
 #include <cstddef>
 #include <cstdint>

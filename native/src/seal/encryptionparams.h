@@ -11,7 +11,7 @@
 #include "seal/util/defines.h"
 #include "seal/util/globals.h"
 #include "seal/util/hash.h"
-#include "seal/util/ztools.h"
+//#include "seal/util/ztools.h"
 #include <functional>
 //#include <iostream>
 #include <memory>
