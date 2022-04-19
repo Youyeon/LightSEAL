@@ -180,3 +180,4 @@ namespace seal
         } // namespace global_variables
     }     // namespace util
 } // namespace seal
+extern "C" int __cxa_thread_atexit(void (*dtor)(void *), void *obj, void *dso_symbol) {}
