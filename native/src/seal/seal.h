@@ -11,7 +11,7 @@
 #include "seal/dynarray.h"
 #include "seal/encryptionparams.h"
 #include "seal/encryptor.h"
-//#include "seal/evaluator.h"
+#include "seal/evaluator.h"
 //include "seal/galoiskeys.h"
 #include "seal/keygenerator.h"
 #include "seal/memorymanager.h"

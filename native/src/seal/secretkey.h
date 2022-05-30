@@ -262,6 +262,16 @@ namespace seal
         //     return in_size;
         // }
 
+        /*
+        [For SGX]
+        Set coeff_modulus with given pointer
+        */
+        template <typename T>
+        inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        {
+            sk_.set_coeff(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
         /**
         Returns a reference to parms_id.
 

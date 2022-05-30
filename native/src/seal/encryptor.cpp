@@ -8,7 +8,7 @@
 #include "seal/util/iterator.h"
 #include "seal/util/polyarithsmallmod.h"
 #include "seal/util/rlwe.h"
-#include "seal/util/scalingvariant.h"
+//#include "seal/util/scalingvariant.h"
 #include <algorithm>
 #include <stdexcept>
 

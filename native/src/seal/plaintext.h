@@ -547,6 +547,16 @@ namespace seal
             return util::get_nonzero_uint64_count_uint(data_.cbegin(), coeff_count_);
         }
 
+        /*
+        [For SGX]
+        Set coeff_modulus with given pointer
+        */
+        template <typename T>
+        SEAL_NODISCARD inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        {
+            data_.setdata(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
         /**
         Returns a human-readable string description of the plaintext polynomial.
 

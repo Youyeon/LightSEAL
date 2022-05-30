@@ -78,6 +78,16 @@ namespace seal
             return pk_;
         }
 
+        /*
+        [For SGX]
+        Set coeff_modulus with given pointer
+        */
+        template <typename T>
+        inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        {
+            pk_.set_coeff(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
         /**
         Returns an upper bound on the size of the PublicKey, as if it was written
         to an output stream.

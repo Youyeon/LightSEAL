@@ -5,7 +5,7 @@
 
 #include "seal/ciphertext.h"
 #include "seal/context.h"
-#include "seal/galoiskeys.h"
+//#include "seal/galoiskeys.h"
 #include "seal/memorymanager.h"
 #include "seal/modulus.h"
 #include "seal/plaintext.h"
@@ -580,23 +580,23 @@ namespace seal
         relinearization the given relinearization keys are used. Dynamic memory allocations in the process are allocated
         from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypteds The ciphertexts to multiply
-        @param[in] relin_keys The relinearization keys
-        @param[out] destination The ciphertext to overwrite with the multiplication result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::invalid_argument if encrypteds is empty
-        @throws std::invalid_argument if ciphertexts or relin_keys are not valid for the encryption parameters
-        @throws std::invalid_argument if encrypteds are not in the default NTT form
-        @throws std::invalid_argument if the output scale is too large for the encryption parameters
-        @throws std::invalid_argument if the size of relin_keys is too small
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        void multiply_many(
-            const std::vector<Ciphertext> &encrypteds, const RelinKeys &relin_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const;
+        // @param[in] encrypteds The ciphertexts to multiply
+        // @param[in] relin_keys The relinearization keys
+        // @param[out] destination The ciphertext to overwrite with the multiplication result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::invalid_argument if encrypteds is empty
+        // @throws std::invalid_argument if ciphertexts or relin_keys are not valid for the encryption parameters
+        // @throws std::invalid_argument if encrypteds are not in the default NTT form
+        // @throws std::invalid_argument if the output scale is too large for the encryption parameters
+        // @throws std::invalid_argument if the size of relin_keys is too small
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // void multiply_many(
+        //     const std::vector<Ciphertext> &encrypteds, const RelinKeys &relin_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const;
 
         /**
         Exponentiates a ciphertext. This functions raises encrypted to a power. Dynamic memory allocations in the
@@ -604,23 +604,23 @@ namespace seal
         in a depth-optimal order, and relinearization is performed automatically after every multiplication in the
         process. In relinearization the given relinearization keys are used.
 
-        @param[in] encrypted The ciphertext to exponentiate
-        @param[in] exponent The power to raise the ciphertext to
-        @param[in] relin_keys The relinearization keys
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::invalid_argument if encrypted or relin_keys is not valid for the encryption parameters
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if the output scale is too large for the encryption parameters
-        @throws std::invalid_argument if exponent is zero
-        @throws std::invalid_argument if the size of relin_keys is too small
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        void exponentiate_inplace(
-            Ciphertext &encrypted, std::uint64_t exponent, const RelinKeys &relin_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const;
+        // @param[in] encrypted The ciphertext to exponentiate
+        // @param[in] exponent The power to raise the ciphertext to
+        // @param[in] relin_keys The relinearization keys
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::invalid_argument if encrypted or relin_keys is not valid for the encryption parameters
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if the output scale is too large for the encryption parameters
+        // @throws std::invalid_argument if exponent is zero
+        // @throws std::invalid_argument if the size of relin_keys is too small
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // void exponentiate_inplace(
+        //     Ciphertext &encrypted, std::uint64_t exponent, const RelinKeys &relin_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const;
 
         /**
         Exponentiates a ciphertext. This functions raises encrypted to a power and stores the result in the destination
@@ -629,28 +629,28 @@ namespace seal
         automatically after every multiplication in the process. In relinearization the given relinearization keys are
         used.
 
-        @param[in] encrypted The ciphertext to exponentiate
-        @param[in] exponent The power to raise the ciphertext to
-        @param[in] relin_keys The relinearization keys
-        @param[out] destination The ciphertext to overwrite with the power
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::invalid_argument if encrypted or relin_keys is not valid for the encryption parameters
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if the output scale is too large for the encryption parameters
-        @throws std::invalid_argument if exponent is zero
-        @throws std::invalid_argument if the size of relin_keys is too small
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void exponentiate(
-            const Ciphertext &encrypted, std::uint64_t exponent, const RelinKeys &relin_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            exponentiate_inplace(destination, exponent, relin_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to exponentiate
+        // @param[in] exponent The power to raise the ciphertext to
+        // @param[in] relin_keys The relinearization keys
+        // @param[out] destination The ciphertext to overwrite with the power
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::invalid_argument if encrypted or relin_keys is not valid for the encryption parameters
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if the output scale is too large for the encryption parameters
+        // @throws std::invalid_argument if exponent is zero
+        // @throws std::invalid_argument if the size of relin_keys is too small
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void exponentiate(
+        //     const Ciphertext &encrypted, std::uint64_t exponent, const RelinKeys &relin_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     exponentiate_inplace(destination, exponent, relin_keys, std::move(pool));
+        // }
 
         /**
         Adds a ciphertext and a plaintext.
@@ -870,25 +870,25 @@ namespace seal
         complex conjugation in CKKS. In the polynomial view (not batching), a Galois automorphism by a Galois element p
         changes Enc(plain(x)) to Enc(plain(x^p)).
 
-        @param[in] encrypted The ciphertext to apply the Galois automorphism to
-        @param[in] galois_elt The Galois element
-        @param[in] galois_keys The Galois keys
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if the Galois element is not valid
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        void apply_galois_inplace(
-            Ciphertext &encrypted, std::uint32_t galois_elt, const GaloisKeys &galois_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const;
+        // @param[in] encrypted The ciphertext to apply the Galois automorphism to
+        // @param[in] galois_elt The Galois element
+        // @param[in] galois_keys The Galois keys
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if the Galois element is not valid
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // void apply_galois_inplace(
+        //     Ciphertext &encrypted, std::uint32_t galois_elt, const GaloisKeys &galois_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const;
 
         /**
         Applies a Galois automorphism to a ciphertext and writes the result to the destination parameter. To evaluate
@@ -902,30 +902,30 @@ namespace seal
         complex conjugation in CKKS. In the polynomial view (not batching), a Galois automorphism by a Galois element p
         changes Enc(plain(x)) to Enc(plain(x^p)).
 
-        @param[in] encrypted The ciphertext to apply the Galois automorphism to
-        @param[in] galois_elt The Galois element
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if the Galois element is not valid
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void apply_galois(
-            const Ciphertext &encrypted, std::uint32_t galois_elt, const GaloisKeys &galois_keys,
-            Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            apply_galois_inplace(destination, galois_elt, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to apply the Galois automorphism to
+        // @param[in] galois_elt The Galois element
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if the Galois element is not valid
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void apply_galois(
+        //     const Ciphertext &encrypted, std::uint32_t galois_elt, const GaloisKeys &galois_keys,
+        //     Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     apply_galois_inplace(destination, galois_elt, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext matrix rows cyclically. When batching is used with the BFV scheme, this function rotates the
@@ -934,34 +934,34 @@ namespace seal
         rotate must have absolute value at most N/2-1. Dynamic memory allocations in the process are allocated from the
         memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] steps The number of steps to rotate (positive left, negative right)
-        @param[in] galois_keys The Galois keys
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::logic_error if the encryption parameters do not support batching
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if steps has too big absolute value
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_rows_inplace(
-            Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
-            {
-                throw std::logic_error("unsupported scheme");
-            }
-            rotate_internal(encrypted, steps, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] steps The number of steps to rotate (positive left, negative right)
+        // @param[in] galois_keys The Galois keys
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::logic_error if the encryption parameters do not support batching
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if steps has too big absolute value
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_rows_inplace(
+        //     Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
+        //     {
+        //         throw std::logic_error("unsupported scheme");
+        //     }
+        //     rotate_internal(encrypted, steps, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext matrix rows cyclically. When batching is used with the BFV scheme, this function rotates the
@@ -970,32 +970,32 @@ namespace seal
         of the polynomial modulus, the number of steps to rotate must have absolute value at most N/2-1. Dynamic memory
         allocations in the process are allocated from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] steps The number of steps to rotate (positive left, negative right)
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::logic_error if the encryption parameters do not support batching
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if steps has too big absolute value
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_rows(
-            const Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            rotate_rows_inplace(destination, steps, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] steps The number of steps to rotate (positive left, negative right)
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::logic_error if the encryption parameters do not support batching
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if steps has too big absolute value
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_rows(
+        //     const Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     rotate_rows_inplace(destination, steps, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext matrix columns cyclically. When batching is used with the BFV scheme, this function rotates
@@ -1003,33 +1003,33 @@ namespace seal
         is the degree of the polynomial modulus, this means simply swapping the two rows. Dynamic memory allocations in
         the process are allocated from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::logic_error if the encryption parameters do not support batching
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_columns_inplace(
-            Ciphertext &encrypted, const GaloisKeys &galois_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
-            {
-                throw std::logic_error("unsupported scheme");
-            }
-            conjugate_internal(encrypted, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::logic_error if the encryption parameters do not support batching
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_columns_inplace(
+        //     Ciphertext &encrypted, const GaloisKeys &galois_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     if (context_.key_context_data()->parms().scheme() != scheme_type::bfv)
+        //     {
+        //         throw std::logic_error("unsupported scheme");
+        //     }
+        //     conjugate_internal(encrypted, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext matrix columns cyclically. When batching is used with the BFV scheme, this function rotates
@@ -1038,30 +1038,30 @@ namespace seal
         swapping the two rows. Dynamic memory allocations in the process are allocated from the memory pool pointed to
         by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::bfv
-        @throws std::logic_error if the encryption parameters do not support batching
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_columns(
-            const Ciphertext &encrypted, const GaloisKeys &galois_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            rotate_columns_inplace(destination, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::bfv
+        // @throws std::logic_error if the encryption parameters do not support batching
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_columns(
+        //     const Ciphertext &encrypted, const GaloisKeys &galois_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     rotate_columns_inplace(destination, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext vector cyclically. When using the CKKS scheme, this function rotates the encrypted plaintext
@@ -1070,33 +1070,33 @@ namespace seal
         value at most N/2-1. Dynamic memory allocations in the process are allocated from the memory pool pointed to by
         the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] steps The number of steps to rotate (positive left, negative right)
-        @param[in] galois_keys The Galois keys
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::ckks
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is not in the default NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if steps has too big absolute value
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_vector_inplace(
-            Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            if (context_.key_context_data()->parms().scheme() != scheme_type::ckks)
-            {
-                throw std::logic_error("unsupported scheme");
-            }
-            rotate_internal(encrypted, steps, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] steps The number of steps to rotate (positive left, negative right)
+        // @param[in] galois_keys The Galois keys
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::ckks
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is not in the default NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if steps has too big absolute value
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_vector_inplace(
+        //     Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     if (context_.key_context_data()->parms().scheme() != scheme_type::ckks)
+        //     {
+        //         throw std::logic_error("unsupported scheme");
+        //     }
+        //     rotate_internal(encrypted, steps, galois_keys, std::move(pool));
+        // }
 
         /**
         Rotates plaintext vector cyclically. When using the CKKS scheme, this function rotates the encrypted plaintext
@@ -1105,92 +1105,92 @@ namespace seal
         the number of steps to rotate must have absolute value at most N/2-1. Dynamic memory allocations in the process
         are allocated from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] steps The number of steps to rotate (positive left, negative right)
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::ckks
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if steps has too big absolute value
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void rotate_vector(
-            const Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            rotate_vector_inplace(destination, steps, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] steps The number of steps to rotate (positive left, negative right)
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::ckks
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if steps has too big absolute value
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void rotate_vector(
+        //     const Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     rotate_vector_inplace(destination, steps, galois_keys, std::move(pool));
+        // }
 
         /**
         Complex conjugates plaintext slot values. When using the CKKS scheme, this function complex conjugates all
         values in the underlying plaintext. Dynamic memory allocations in the process are allocated from the memory pool
         pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::ckks
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void complex_conjugate_inplace(
-            Ciphertext &encrypted, const GaloisKeys &galois_keys,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            if (context_.key_context_data()->parms().scheme() != scheme_type::ckks)
-            {
-                throw std::logic_error("unsupported scheme");
-            }
-            conjugate_internal(encrypted, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::ckks
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void complex_conjugate_inplace(
+        //     Ciphertext &encrypted, const GaloisKeys &galois_keys,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     if (context_.key_context_data()->parms().scheme() != scheme_type::ckks)
+        //     {
+        //         throw std::logic_error("unsupported scheme");
+        //     }
+        //     conjugate_internal(encrypted, galois_keys, std::move(pool));
+        // }
 
         /**
         Complex conjugates plaintext slot values. When using the CKKS scheme, this function complex conjugates all
         values in the underlying plaintext, and writes the result to the destination parameter. Dynamic memory
         allocations in the process are allocated from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] encrypted The ciphertext to rotate
-        @param[in] galois_keys The Galois keys
-        @param[out] destination The ciphertext to overwrite with the rotated result
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if scheme is not scheme_type::ckks
-        @throws std::invalid_argument if encrypted or galois_keys is not valid for
-        the encryption parameters
-        @throws std::invalid_argument if galois_keys do not correspond to the top
-        level parameters in the current context
-        @throws std::invalid_argument if encrypted is in NTT form
-        @throws std::invalid_argument if encrypted has size larger than 2
-        @throws std::invalid_argument if necessary Galois keys are not present
-        @throws std::invalid_argument if pool is uninitialized
-        @throws std::logic_error if keyswitching is not supported by the context
-        @throws std::logic_error if result ciphertext is transparent
-        */
-        inline void complex_conjugate(
-            const Ciphertext &encrypted, const GaloisKeys &galois_keys, Ciphertext &destination,
-            MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            destination = encrypted;
-            complex_conjugate_inplace(destination, galois_keys, std::move(pool));
-        }
+        // @param[in] encrypted The ciphertext to rotate
+        // @param[in] galois_keys The Galois keys
+        // @param[out] destination The ciphertext to overwrite with the rotated result
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if scheme is not scheme_type::ckks
+        // @throws std::invalid_argument if encrypted or galois_keys is not valid for
+        // the encryption parameters
+        // @throws std::invalid_argument if galois_keys do not correspond to the top
+        // level parameters in the current context
+        // @throws std::invalid_argument if encrypted is in NTT form
+        // @throws std::invalid_argument if encrypted has size larger than 2
+        // @throws std::invalid_argument if necessary Galois keys are not present
+        // @throws std::invalid_argument if pool is uninitialized
+        // @throws std::logic_error if keyswitching is not supported by the context
+        // @throws std::logic_error if result ciphertext is transparent
+        // */
+        // inline void complex_conjugate(
+        //     const Ciphertext &encrypted, const GaloisKeys &galois_keys, Ciphertext &destination,
+        //     MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     destination = encrypted;
+        //     complex_conjugate_inplace(destination, galois_keys, std::move(pool));
+        // }
 
         /**
         Enables access to private members of seal::Evaluator for SEAL_C.
@@ -1206,11 +1206,11 @@ namespace seal
 
         Evaluator &operator=(Evaluator &&assign) = delete;
 
-        void bfv_multiply(Ciphertext &encrypted1, const Ciphertext &encrypted2, MemoryPoolHandle pool) const;
+        //void bfv_multiply(Ciphertext &encrypted1, const Ciphertext &encrypted2, MemoryPoolHandle pool) const;
 
         void ckks_multiply(Ciphertext &encrypted1, const Ciphertext &encrypted2, MemoryPoolHandle pool) const;
 
-        void bfv_square(Ciphertext &encrypted, MemoryPoolHandle pool) const;
+        //void bfv_square(Ciphertext &encrypted, MemoryPoolHandle pool) const;
 
         void ckks_square(Ciphertext &encrypted, MemoryPoolHandle pool) const;
 
@@ -1225,31 +1225,31 @@ namespace seal
 
         void mod_switch_drop_to_next(Plaintext &plain) const;
 
-        void rotate_internal(
-            Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, MemoryPoolHandle pool) const;
+        // void rotate_internal(
+        //     Ciphertext &encrypted, int steps, const GaloisKeys &galois_keys, MemoryPoolHandle pool) const;
 
-        inline void conjugate_internal(
-            Ciphertext &encrypted, const GaloisKeys &galois_keys, MemoryPoolHandle pool) const
-        {
-            // Verify parameters.
-            auto context_data_ptr = context_.get_context_data(encrypted.parms_id());
-            if (!context_data_ptr)
-            {
-                throw std::invalid_argument("encrypted is not valid for encryption parameters");
-            }
+        // inline void conjugate_internal(
+        //     Ciphertext &encrypted, const GaloisKeys &galois_keys, MemoryPoolHandle pool) const
+        // {
+        //     // Verify parameters.
+        //     auto context_data_ptr = context_.get_context_data(encrypted.parms_id());
+        //     if (!context_data_ptr)
+        //     {
+        //         throw std::invalid_argument("encrypted is not valid for encryption parameters");
+        //     }
 
-            // Extract encryption parameters.
-            auto &context_data = *context_data_ptr;
-            if (!context_data.qualifiers().using_batching)
-            {
-                throw std::logic_error("encryption parameters do not support batching");
-            }
+        //     // Extract encryption parameters.
+        //     auto &context_data = *context_data_ptr;
+        //     if (!context_data.qualifiers().using_batching)
+        //     {
+        //         throw std::logic_error("encryption parameters do not support batching");
+        //     }
 
-            auto galois_tool = context_data.galois_tool();
+        //     auto galois_tool = context_data.galois_tool();
 
-            // Perform rotation and key switching
-            apply_galois_inplace(encrypted, galois_tool->get_elt_from_step(0), galois_keys, std::move(pool));
-        }
+        //     // Perform rotation and key switching
+        //     apply_galois_inplace(encrypted, galois_tool->get_elt_from_step(0), galois_keys, std::move(pool));
+        // }
 
         void switch_key_inplace(
             Ciphertext &encrypted, util::ConstRNSIter target_iter, const KSwitchKeys &kswitch_keys,

@@ -9,6 +9,7 @@
 #include "seal/util/common.h"
 #include "seal/util/defines.h"
 #include "seal/util/pointer.h"
+#include "seal/util/polycore.h"
 #include <algorithm>
 //#include <iostream>
 #include <limits>
@@ -647,6 +648,20 @@ namespace seal
         //     return Serialization::Load(
         //         std::bind(&DynArray<T>::load_members, this, _1, _2, in_size_bound), in, size, false);
         // }
+
+        /*
+        [For SGX]
+        Set coeff_modulus with given pointer
+        */
+        inline void setdata(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        {
+            util::Pointer<std::uint64_t> d = seal::util::allocate_poly(coeff_count, coeff_modulus_size, pool_);
+            seal::util::set_poly(coeff_modulus, coeff_count, coeff_modulus_size, d.get());
+            
+            data_ = std::move(d);
+            capacity_ = coeff_count*coeff_modulus_size;
+            size_ = coeff_count*coeff_modulus_size;
+        }
 
     private:
         // void save_members(std::ostream &stream) const

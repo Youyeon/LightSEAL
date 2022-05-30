@@ -6,7 +6,7 @@
 #include "seal/util/common.h"
 #include "seal/util/polyarithsmallmod.h"
 #include "seal/util/polycore.h"
-#include "seal/util/scalingvariant.h"
+//#include "seal/util/scalingvariant.h"
 #include "seal/util/uintarith.h"
 #include "seal/util/uintcore.h"
 #include <algorithm>

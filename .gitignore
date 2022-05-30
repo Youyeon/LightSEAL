@@ -29,6 +29,7 @@ seal_wasm.wasm
 bin/
 lib/
 build/
+build2/
 *.build
 env
 thirdparty/

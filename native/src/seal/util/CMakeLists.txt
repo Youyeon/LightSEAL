@@ -18,7 +18,7 @@ set(SEAL_SOURCE_FILES ${SEAL_SOURCE_FILES}
     ${CMAKE_CURRENT_LIST_DIR}/polyarithsmallmod.cpp
     ${CMAKE_CURRENT_LIST_DIR}/rlwe.cpp
     ${CMAKE_CURRENT_LIST_DIR}/rns.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/scalingvariant.cpp
+    #${CMAKE_CURRENT_LIST_DIR}/scalingvariant.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ntt.cpp
     ${CMAKE_CURRENT_LIST_DIR}/streambuf.cpp
     ${CMAKE_CURRENT_LIST_DIR}/uintarith.cpp
@@ -55,7 +55,7 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/polycore.h
         ${CMAKE_CURRENT_LIST_DIR}/rlwe.h
         ${CMAKE_CURRENT_LIST_DIR}/rns.h
-        ${CMAKE_CURRENT_LIST_DIR}/scalingvariant.h
+        #${CMAKE_CURRENT_LIST_DIR}/scalingvariant.h
         ${CMAKE_CURRENT_LIST_DIR}/ntt.h
         ${CMAKE_CURRENT_LIST_DIR}/streambuf.h
         ${CMAKE_CURRENT_LIST_DIR}/uintarith.h
