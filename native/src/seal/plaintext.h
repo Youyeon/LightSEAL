@@ -20,6 +20,11 @@
 #include "gsl/span"
 #endif
 
+typedef struct pt_data {
+    std::size_t coeff_count;
+    double scale;
+} pt_data;
+
 namespace seal
 {
     /**
@@ -552,9 +557,34 @@ namespace seal
         Set coeff_modulus with given pointer
         */
         template <typename T>
-        SEAL_NODISCARD inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        SEAL_NODISCARD inline void set_coeff(T* coeff_modulus, std::size_t coeff_count, std::size_t coeff_modulus_size) noexcept
         {
             data_.setdata(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
+        /*
+        [For SGX]
+        Set parms_id with given values
+        */
+        template <typename T>
+        SEAL_NODISCARD inline void set_parms_id(T* parms_id) noexcept
+        {
+            util::HashFunction::hash_block_type new_arr;
+            for (int i=0;i<new_arr.size();i++) {
+                new_arr[i] = parms_id[i]; // new_arr.size() = 4 (hash.h)
+            }
+            parms_id_ = new_arr;
+        }
+
+        /*
+        [For SGX]
+        Set parms_id with given values
+        */
+        SEAL_NODISCARD inline void set_data(unsigned char* ptx) noexcept
+        {
+            pt_data ptx_ = *reinterpret_cast<pt_data*>(ptx);
+            coeff_count_ = ptx_.coeff_count;
+            scale_ = ptx_.scale;
         }
 
         /**

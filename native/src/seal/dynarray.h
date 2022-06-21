@@ -653,7 +653,7 @@ namespace seal
         [For SGX]
         Set coeff_modulus with given pointer
         */
-        inline void setdata(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        inline void setdata(T* coeff_modulus, size_t& coeff_count, size_t& coeff_modulus_size) noexcept
         {
             util::Pointer<std::uint64_t> d = seal::util::allocate_poly(coeff_count, coeff_modulus_size, pool_);
             seal::util::set_poly(coeff_modulus, coeff_count, coeff_modulus_size, d.get());

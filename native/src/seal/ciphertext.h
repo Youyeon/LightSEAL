@@ -19,6 +19,14 @@
 #include <stdexcept>
 #include <string>
 
+typedef struct ct_data {
+            bool is_ntt_form;
+            std::size_t size;
+            std::size_t poly_modulus_degree;
+            std::size_t coeff_modulus_size;
+            double scale;
+        } ct_data;
+
 namespace seal
 {
     /**
@@ -665,9 +673,37 @@ namespace seal
         Set coeff_modulus with given pointer
         */
         template <typename T>
-        SEAL_NODISCARD inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        SEAL_NODISCARD inline void set_coeff(T* coeff_modulus, std::size_t& coeff_count, std::size_t& coeff_modulus_size) noexcept
         {
             data_.setdata(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
+        /*
+        [For SGX]
+        Set parms_id with given values
+        */
+        template <typename T>
+        SEAL_NODISCARD inline void set_parms_id(T* parms_id) noexcept
+        {
+            util::HashFunction::hash_block_type new_arr;
+            for (int i=0;i<new_arr.size();i++) {
+                new_arr[i] = parms_id[i]; // new_arr.size() = 4 (hash.h)
+            }
+            parms_id_ = new_arr;
+        }
+
+        /*
+        [For SGX]
+        Set parms_id with given values
+        */
+        SEAL_NODISCARD inline void set_data(unsigned char* ctx) noexcept
+        {
+            ct_data ctx_ = *reinterpret_cast<ct_data*>(ctx);
+            is_ntt_form_ = ctx_.is_ntt_form;
+            size_ = ctx_.size;
+            poly_modulus_degree_ = ctx_.poly_modulus_degree;
+            coeff_modulus_size_ = ctx_.coeff_modulus_size;
+            scale_ = ctx_.scale;
         }
 
         /**

@@ -83,9 +83,18 @@ namespace seal
         Set coeff_modulus with given pointer
         */
         template <typename T>
-        inline void set_coeff(T* coeff_modulus, size_t coeff_count, size_t coeff_modulus_size) noexcept
+        inline void set_coeff(T* coeff_modulus, std::size_t& coeff_count, std::size_t& coeff_modulus_size) noexcept
         {
             pk_.set_coeff(coeff_modulus, coeff_count, coeff_modulus_size);
+        }
+
+        /*
+        [For SGX]
+        Set data(pk_) with given object
+        */
+        inline void set_data(unsigned char* ctx) noexcept
+        {
+            pk_.set_data(ctx);
         }
 
         /**
