@@ -59,6 +59,9 @@ else()
 endif()
 message(STATUS "Microsoft SEAL debug mode: ${SEAL_DEBUG}")
 
+set(SRC_PATH ${SEAL_SRC_PATH})
+message(STATUS "SEAL_SRC_PATH: ${SEAL_SRC_PATH}")
+
 # [option] SEAL_USE_CXX17 (default: ON)
 # Use C++17, use C++14 otherwise.
 set(SEAL_USE_CXX17_OPTION_STR "Use C++17")
@@ -84,15 +87,13 @@ endif()
 
 # Required files and directories
 include(GNUInstallDirs)
-set(CMAKE_INSTALL_OLDINCLUDEDIR "/opt/intel/sgxsdk/include")
-
 
 # Runtime path setup
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Source Tree
-set(SEAL_INCLUDES_DIR ${CMAKE_CURRENT_LIST_DIR}/native/src)
+set(SEAL_INCLUDES_DIR ${CMAKE_CURRENT_LIST_DIR}/native/${SRC_PATH})
 set(SEAL_THIRDPARTY_DIR ${CMAKE_CURRENT_LIST_DIR}/thirdparty)
 set(SEAL_CONFIG_IN_FILENAME ${CMAKE_CURRENT_LIST_DIR}/cmake/SEALConfig.cmake.in)
 set(SEAL_CONFIG_H_IN_FILENAME ${SEAL_INCLUDES_DIR}/seal/util/config.h.in)
@@ -104,7 +105,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(SEAL_TARGETS_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/cmake/SEALTargets.cmake)
 set(SEAL_CONFIG_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/cmake/SEALConfig.cmake)
 set(SEAL_CONFIG_VERSION_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/cmake/SEALConfigVersion.cmake)
-set(SEAL_CONFIG_H_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/native/src/seal/util/config.h)
+set(SEAL_CONFIG_H_FILENAME ${CMAKE_CURRENT_BINARY_DIR}/native/${SRC_PATH}/seal/util/config.h)
 
 # Install
 set(SEAL_CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/SEAL-${SEAL_VERSION_MAJOR}.${SEAL_VERSION_MINOR})
@@ -368,7 +369,7 @@ mark_as_advanced(FORCE SEAL_USE_ALIGNED_ALLOC)
 
 # Add source files to library and header files to install
 set(SEAL_SOURCE_FILES "")
-add_subdirectory(native/src/seal)
+add_subdirectory(native/${SRC_PATH}/seal)
 
 # Create the config file
 configure_file(${SEAL_CONFIG_H_IN_FILENAME} ${SEAL_CONFIG_H_FILENAME})
