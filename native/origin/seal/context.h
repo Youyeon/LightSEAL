@@ -557,12 +557,6 @@ namespace seal
             return (data != context_data_map_.end()) ? data->second : std::shared_ptr<ContextData>{ nullptr };
         }
 
-        SEAL_NODISCARD inline size_t sizeof_context_data_map() const
-        {
-            return sizeof(context_data_map_);
-            //return (data != context_data_map_.end()) ? data->second : std::shared_ptr<ContextData>{ nullptr };
-        }
-
         /**
         Returns the ContextData corresponding to the last encryption parameters
         that are used for data.

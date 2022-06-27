@@ -521,4 +521,19 @@ namespace seal
             context_data_ptr = context_data_ptr->next_context_data_;
         }
     }
+
+    SEALContext::SEALContext(
+        uint64_t* context_parmid_key, uint64_t* context_parmid_first, uint64_t* context_parmid_last, std::unordered_map<parms_id_type, std::shared_ptr<const ContextData>> context_data_map, sec_level_type sec_level, MemoryPoolHandle pool)
+        : context_data_map_(context_data_map), pool_(move(pool)), sec_level_(sec_level)
+        {
+            util::HashFunction::hash_block_type key, first, last;
+            for (int i=0;i<4;i++) {
+                key[i] = context_parmid_key[i];
+                first[i] = context_parmid_first[i];
+                last[i] = context_parmid_last[i];
+            }
+            key_parms_id_=key;
+            first_parms_id_=first;
+            last_parms_id_=last;
+        }
 } // namespace seal

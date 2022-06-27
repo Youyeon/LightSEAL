@@ -496,6 +496,11 @@ namespace seal
             : SEALContext(parms, expand_mod_chain, sec_level, MemoryManager::GetPool())
         {}
 
+        SEALContext(
+            uint64_t* context_parmid_key, uint64_t* context_parmid_first, uint64_t* context_parmid_last, std::unordered_map<parms_id_type, std::shared_ptr<const ContextData>> context_data_map, sec_level_type sec_level = sec_level_type::tc128)
+            : SEALContext(context_parmid_key, context_parmid_first, context_parmid_last, context_data_map, sec_level, MemoryManager::GetPool())
+        {}
+
         /**
         Creates a new SEALContext by copying a given one.
 
@@ -555,12 +560,6 @@ namespace seal
         {
             auto data = context_data_map_.find(first_parms_id_);
             return (data != context_data_map_.end()) ? data->second : std::shared_ptr<ContextData>{ nullptr };
-        }
-
-        SEAL_NODISCARD inline size_t sizeof_context_data_map() const
-        {
-            return sizeof(context_data_map_);
-            //return (data != context_data_map_.end()) ? data->second : std::shared_ptr<ContextData>{ nullptr };
         }
 
         /**
@@ -627,16 +626,25 @@ namespace seal
         }
 
         /**
+         *
+        [for SGX]
+        */
+        SEAL_NODISCARD inline const std::unordered_map<parms_id_type, std::shared_ptr<const ContextData>> &context_data_map() const noexcept
+        {
+            return context_data_map_;
+        }
+
+        /**
         Returns whether the coefficient modulus supports keyswitching. In practice,
         support for keyswitching is required by Evaluator::relinearize,
         Evaluator::apply_galois, and all rotation and conjugation operations. For
         keyswitching to be available, the coefficient modulus parameter must consist
         of at least two prime number factors.
         */
-        SEAL_NODISCARD inline bool using_keyswitching() const noexcept
-        {
-            return using_keyswitching_;
-        }
+        // SEAL_NODISCARD inline bool using_keyswitching() const noexcept
+        // {
+        //     return using_keyswitching_;
+        // }
 
     private:
         /**
@@ -652,6 +660,8 @@ namespace seal
         @throws std::invalid_argument if pool is uninitialized
         */
         SEALContext(EncryptionParameters parms, bool expand_mod_chain, sec_level_type sec_level, MemoryPoolHandle pool);
+
+        SEALContext(uint64_t* context_parmid_key, uint64_t* context_parmid_first, uint64_t* context_parmid_last, std::unordered_map<parms_id_type, std::shared_ptr<const ContextData>> context_data_map, sec_level_type sec_level, MemoryPoolHandle pool);
 
         ContextData validate(EncryptionParameters parms);
 
@@ -681,6 +691,6 @@ namespace seal
         /**
         Is keyswitching supported by the encryption parameters?
         */
-        bool using_keyswitching_;
+        //bool using_keyswitching_;
     };
 } // namespace seal
