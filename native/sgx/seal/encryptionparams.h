@@ -459,10 +459,10 @@ namespace seal
         {
             switch (scheme)
             {
-            case static_cast<std::uint8_t>(scheme_type::none):
+            //case static_cast<std::uint8_t>(scheme_type::none):
                 /* fall through */
 
-            case static_cast<std::uint8_t>(scheme_type::bfv):
+            //case static_cast<std::uint8_t>(scheme_type::bfv):
                 /* fall through */
 
             case static_cast<std::uint8_t>(scheme_type::ckks):

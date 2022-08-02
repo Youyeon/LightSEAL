@@ -3,10 +3,10 @@
 
 #include "seal/ciphertext.h"
 //#include "seal/galoiskeys.h"
-#include "seal/kswitchkeys.h"
+//#include "seal/kswitchkeys.h"
 #include "seal/plaintext.h"
 #include "seal/publickey.h"
-#include "seal/relinkeys.h"
+//#include "seal/relinkeys.h"
 #include "seal/secretkey.h"
 #include "seal/valcheck.h"
 #include "seal/util/common.h"
@@ -124,49 +124,49 @@ namespace seal
                (in.parms_id() == key_parms_id) && (in.data().size() == SEAL_CIPHERTEXT_SIZE_MIN);
     }
 
-    bool is_metadata_valid_for(const KSwitchKeys &in, const SEALContext &context)
-    {
-        // Verify parameters
-        if (!context.parameters_set())
-        {
-            return false;
-        }
+    // bool is_metadata_valid_for(const KSwitchKeys &in, const SEALContext &context)
+    // {
+    //     // Verify parameters
+    //     if (!context.parameters_set())
+    //     {
+    //         return false;
+    //     }
 
-        // Are the parameters valid and at key level?
-        if (in.parms_id() != context.key_parms_id())
-        {
-            return false;
-        }
+    //     // Are the parameters valid and at key level?
+    //     if (in.parms_id() != context.key_parms_id())
+    //     {
+    //         return false;
+    //     }
 
-        size_t decomp_mod_count = context.first_context_data()->parms().coeff_modulus().size();
-        for (auto &a : in.data())
-        {
-            // Check that each highest level component has right size
-            if (a.size() && (a.size() != decomp_mod_count))
-            {
-                return false;
-            }
-            for (auto &b : a)
-            {
-                // Check that b is a valid public key (metadata only); this also
-                // checks that its parms_id matches key_parms_id.
-                if (!is_metadata_valid_for(b, context))
-                {
-                    return false;
-                }
-            }
-        }
+    //     size_t decomp_mod_count = context.first_context_data()->parms().coeff_modulus().size();
+    //     for (auto &a : in.data())
+    //     {
+    //         // Check that each highest level component has right size
+    //         if (a.size() && (a.size() != decomp_mod_count))
+    //         {
+    //             return false;
+    //         }
+    //         for (auto &b : a)
+    //         {
+    //             // Check that b is a valid public key (metadata only); this also
+    //             // checks that its parms_id matches key_parms_id.
+    //             if (!is_metadata_valid_for(b, context))
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    bool is_metadata_valid_for(const RelinKeys &in, const SEALContext &context)
-    {
-        // Check that the size is within bounds.
-        bool size_check =
-            !in.size() || (in.size() <= SEAL_CIPHERTEXT_SIZE_MAX - 2 && in.size() >= SEAL_CIPHERTEXT_SIZE_MIN - 2);
-        return is_metadata_valid_for(static_cast<const KSwitchKeys &>(in), context) && size_check;
-    }
+    // bool is_metadata_valid_for(const RelinKeys &in, const SEALContext &context)
+    // {
+    //     // Check that the size is within bounds.
+    //     bool size_check =
+    //         !in.size() || (in.size() <= SEAL_CIPHERTEXT_SIZE_MAX - 2 && in.size() >= SEAL_CIPHERTEXT_SIZE_MIN - 2);
+    //     return is_metadata_valid_for(static_cast<const KSwitchKeys &>(in), context) && size_check;
+    // }
 
     // bool is_metadata_valid_for(const GaloisKeys &in, const SEALContext &context)
     // {
@@ -207,26 +207,26 @@ namespace seal
         return is_buffer_valid(in.data());
     }
 
-    bool is_buffer_valid(const KSwitchKeys &in)
-    {
-        for (auto &a : in.data())
-        {
-            for (auto &b : a)
-            {
-                if (!is_buffer_valid(b))
-                {
-                    return false;
-                }
-            }
-        }
+    // bool is_buffer_valid(const KSwitchKeys &in)
+    // {
+    //     for (auto &a : in.data())
+    //     {
+    //         for (auto &b : a)
+    //         {
+    //             if (!is_buffer_valid(b))
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    bool is_buffer_valid(const RelinKeys &in)
-    {
-        return is_buffer_valid(static_cast<const KSwitchKeys &>(in));
-    }
+    // bool is_buffer_valid(const RelinKeys &in)
+    // {
+    //     return is_buffer_valid(static_cast<const KSwitchKeys &>(in));
+    // }
 
     // bool is_buffer_valid(const GaloisKeys &in)
     // {
@@ -382,40 +382,40 @@ namespace seal
         return true;
     }
 
-    bool is_data_valid_for(const KSwitchKeys &in, const SEALContext &context)
-    {
-        // Verify parameters
-        if (!context.parameters_set())
-        {
-            return false;
-        }
+    // bool is_data_valid_for(const KSwitchKeys &in, const SEALContext &context)
+    // {
+    //     // Verify parameters
+    //     if (!context.parameters_set())
+    //     {
+    //         return false;
+    //     }
 
-        // Are the parameters valid for given relinearization keys?
-        if (in.parms_id() != context.key_parms_id())
-        {
-            return false;
-        }
+    //     // Are the parameters valid for given relinearization keys?
+    //     if (in.parms_id() != context.key_parms_id())
+    //     {
+    //         return false;
+    //     }
 
-        for (auto &a : in.data())
-        {
-            for (auto &b : a)
-            {
-                // Check that b is a valid public key; this also checks that its
-                // parms_id matches key_parms_id.
-                if (!is_data_valid_for(b, context))
-                {
-                    return false;
-                }
-            }
-        }
+    //     for (auto &a : in.data())
+    //     {
+    //         for (auto &b : a)
+    //         {
+    //             // Check that b is a valid public key; this also checks that its
+    //             // parms_id matches key_parms_id.
+    //             if (!is_data_valid_for(b, context))
+    //             {
+    //                 return false;
+    //             }
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    bool is_data_valid_for(const RelinKeys &in, const SEALContext &context)
-    {
-        return is_data_valid_for(static_cast<const KSwitchKeys &>(in), context);
-    }
+    // bool is_data_valid_for(const RelinKeys &in, const SEALContext &context)
+    // {
+    //     return is_data_valid_for(static_cast<const KSwitchKeys &>(in), context);
+    // }
 
     // bool is_data_valid_for(const GaloisKeys &in, const SEALContext &context)
     // {

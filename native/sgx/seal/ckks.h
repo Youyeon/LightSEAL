@@ -269,7 +269,7 @@ namespace seal
         parameters
         @throws std::invalid_argument if pool is uninitialized
         */
-        inline void encode(
+        inline void encode( //SOR
             double value, parms_id_type parms_id, double scale, Plaintext &destination,
             MemoryPoolHandle pool = MemoryManager::GetPool())
         {
@@ -352,32 +352,32 @@ namespace seal
         /**
         Encodes an integer number into a plaintext polynomial without any scaling.
         The number repeats for N/2 times to fill all slots.
-        @param[in] value The integer number to encode
-        @param[in] parms_id parms_id determining the encryption parameters to be
-        used by the result plaintext
-        @param[out] destination The plaintext polynomial to overwrite with the
-        result
-        @throws std::invalid_argument if parms_id is not valid for the encryption
-        parameters
-        */
-        inline void encode(std::int64_t value, parms_id_type parms_id, Plaintext &destination)
-        {
-            encode_internal(value, parms_id, destination);
-        }
+        // @param[in] value The integer number to encode
+        // @param[in] parms_id parms_id determining the encryption parameters to be
+        // used by the result plaintext
+        // @param[out] destination The plaintext polynomial to overwrite with the
+        // result
+        // @throws std::invalid_argument if parms_id is not valid for the encryption
+        // parameters
+        // */
+        // inline void encode(std::int64_t value, parms_id_type parms_id, Plaintext &destination)
+        // {
+        //     encode_internal(value, parms_id, destination);
+        // }
 
         /**
         Encodes an integer number into a plaintext polynomial without any scaling.
         The number repeats for N/2 times to fill all slots. The encryption
         parameters used are the top level parameters for the given context.
 
-        @param[in] value The integer number to encode
-        @param[out] destination The plaintext polynomial to overwrite with the
-        result
-        */
-        inline void encode(std::int64_t value, Plaintext &destination)
-        {
-            encode(value, context_.first_parms_id(), destination);
-        }
+        // @param[in] value The integer number to encode
+        // @param[out] destination The plaintext polynomial to overwrite with the
+        // result
+        // */
+        // inline void encode(std::int64_t value, Plaintext &destination)
+        // {
+        //     encode(value, context_.first_parms_id(), destination);
+        // }
 
         /**
         Decodes a plaintext polynomial into double-precision floating-point
@@ -751,7 +751,7 @@ namespace seal
             encode_internal(input.get(), slots_, parms_id, scale, destination, std::move(pool));
         }
 
-        void encode_internal(std::int64_t value, parms_id_type parms_id, Plaintext &destination);
+        //void encode_internal(std::int64_t value, parms_id_type parms_id, Plaintext &destination);
 
         MemoryPoolHandle pool_ = MemoryManager::GetPool();
 

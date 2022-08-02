@@ -17,39 +17,39 @@ using namespace seal::util;
 
 namespace seal
 {
-    namespace
-    {
-        void poly_infty_norm_coeffmod(
-            StrideIter<const uint64_t *> poly, size_t coeff_count, const uint64_t *modulus, uint64_t *result,
-            MemoryPool &pool)
-        {
-            size_t coeff_uint64_count = poly.stride();
+    // namespace
+    // {
+    //     void poly_infty_norm_coeffmod(
+    //         StrideIter<const uint64_t *> poly, size_t coeff_count, const uint64_t *modulus, uint64_t *result,
+    //         MemoryPool &pool)
+    //     {
+    //         size_t coeff_uint64_count = poly.stride();
 
-            // Construct negative threshold: (modulus + 1) / 2
-            auto modulus_neg_threshold(allocate_uint(coeff_uint64_count, pool));
-            half_round_up_uint(modulus, coeff_uint64_count, modulus_neg_threshold.get());
+    //         // Construct negative threshold: (modulus + 1) / 2
+    //         auto modulus_neg_threshold(allocate_uint(coeff_uint64_count, pool));
+    //         half_round_up_uint(modulus, coeff_uint64_count, modulus_neg_threshold.get());
 
-            // Mod out the poly coefficients and choose a symmetric representative from [-modulus,modulus)
-            set_zero_uint(coeff_uint64_count, result);
-            auto coeff_abs_value(allocate_uint(coeff_uint64_count, pool));
-            SEAL_ITERATE(poly, coeff_count, [&](auto I) {
-                if (is_greater_than_or_equal_uint(I, modulus_neg_threshold.get(), coeff_uint64_count))
-                {
-                    sub_uint(modulus, I, coeff_uint64_count, coeff_abs_value.get());
-                }
-                else
-                {
-                    set_uint(I, coeff_uint64_count, coeff_abs_value.get());
-                }
+    //         // Mod out the poly coefficients and choose a symmetric representative from [-modulus,modulus)
+    //         set_zero_uint(coeff_uint64_count, result);
+    //         auto coeff_abs_value(allocate_uint(coeff_uint64_count, pool));
+    //         SEAL_ITERATE(poly, coeff_count, [&](auto I) {
+    //             if (is_greater_than_or_equal_uint(I, modulus_neg_threshold.get(), coeff_uint64_count))
+    //             {
+    //                 sub_uint(modulus, I, coeff_uint64_count, coeff_abs_value.get());
+    //             }
+    //             else
+    //             {
+    //                 set_uint(I, coeff_uint64_count, coeff_abs_value.get());
+    //             }
 
-                if (is_greater_than_uint(coeff_abs_value.get(), result, coeff_uint64_count))
-                {
-                    // Store the new max
-                    set_uint(coeff_abs_value.get(), coeff_uint64_count, result);
-                }
-            });
-        }
-    } // namespace
+    //             if (is_greater_than_uint(coeff_abs_value.get(), result, coeff_uint64_count))
+    //             {
+    //                 // Store the new max
+    //                 set_uint(coeff_abs_value.get(), coeff_uint64_count, result);
+    //             }
+    //         });
+    //     }
+    // } // namespace
 
     Decryptor::Decryptor(const SEALContext &context, const SecretKey &secret_key) : context_(context)
     {
@@ -279,22 +279,22 @@ namespace seal
                         add_poly_coeffmod(get<4>(I), get<0>(I), coeff_count, get<3>(I), get<4>(I));
                     });
             }
-            else
-            {
-                SEAL_ITERATE(
-                    iter(c0, c1, secret_key_array, coeff_modulus, ntt_tables, destination), coeff_modulus_size,
-                    [&](auto I) {
-                        set_uint(get<1>(I), coeff_count, get<5>(I));
-                        // Transform c_1 to NTT form
-                        ntt_negacyclic_harvey_lazy(get<5>(I), get<4>(I));
-                        // put < c_1 * s > mod q in destination
-                        dyadic_product_coeffmod(get<5>(I), get<2>(I), coeff_count, get<3>(I), get<5>(I));
-                        // Transform back
-                        inverse_ntt_negacyclic_harvey(get<5>(I), get<4>(I));
-                        // add c_0 to the result; note that destination should be in the same (NTT) form as encrypted
-                        add_poly_coeffmod(get<5>(I), get<0>(I), coeff_count, get<3>(I), get<5>(I));
-                    });
-            }
+            // else
+            // {
+            //     SEAL_ITERATE(
+            //         iter(c0, c1, secret_key_array, coeff_modulus, ntt_tables, destination), coeff_modulus_size,
+            //         [&](auto I) {
+            //             set_uint(get<1>(I), coeff_count, get<5>(I));
+            //             // Transform c_1 to NTT form
+            //             ntt_negacyclic_harvey_lazy(get<5>(I), get<4>(I));
+            //             // put < c_1 * s > mod q in destination
+            //             dyadic_product_coeffmod(get<5>(I), get<2>(I), coeff_count, get<3>(I), get<5>(I));
+            //             // Transform back
+            //             inverse_ntt_negacyclic_harvey(get<5>(I), get<4>(I));
+            //             // add c_0 to the result; note that destination should be in the same (NTT) form as encrypted
+            //             add_poly_coeffmod(get<5>(I), get<0>(I), coeff_count, get<3>(I), get<5>(I));
+            //         });
+            // }
         }
         else
         {
@@ -305,10 +305,10 @@ namespace seal
             set_poly_array(encrypted.data(1), encrypted_size - 1, coeff_count, coeff_modulus_size, encrypted_copy);
 
             // Transform c_1, c_2, ... to NTT form unless they already are
-            if (!is_ntt_form)
-            {
-                ntt_negacyclic_harvey_lazy(encrypted_copy, encrypted_size - 1, ntt_tables);
-            }
+            // if (!is_ntt_form)
+            // {
+            //     ntt_negacyclic_harvey_lazy(encrypted_copy, encrypted_size - 1, ntt_tables);
+            // }
 
             // Compute dyadic product with secret power array
             auto secret_key_array = PolyIter(secret_key_array_.get(), coeff_count, key_coeff_modulus_size);
@@ -321,11 +321,11 @@ namespace seal
                 add_poly_coeffmod(destination, I, coeff_modulus_size, coeff_modulus, destination);
             });
 
-            if (!is_ntt_form)
-            {
-                // If the input was not in NTT form, need to transform back
-                inverse_ntt_negacyclic_harvey(destination, coeff_modulus_size, ntt_tables);
-            }
+            // if (!is_ntt_form)
+            // {
+            //     // If the input was not in NTT form, need to transform back
+            //     inverse_ntt_negacyclic_harvey(destination, coeff_modulus_size, ntt_tables);
+            // }
 
             // Finally add c_0 to the result; note that destination should be in the same (NTT) form as encrypted
             add_poly_coeffmod(destination, *iter(encrypted), coeff_modulus_size, coeff_modulus, destination);

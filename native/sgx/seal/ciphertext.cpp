@@ -114,36 +114,36 @@ namespace seal
         coeff_modulus_size_ = coeff_modulus_size;
     }
 
-    void Ciphertext::expand_seed(
-        const SEALContext &context, const UniformRandomGeneratorInfo &prng_info, SEALVersion version)
-    {
-        auto context_data_ptr = context.get_context_data(parms_id_);
+    // void Ciphertext::expand_seed(
+    //     const SEALContext &context, const UniformRandomGeneratorInfo &prng_info, SEALVersion version)
+    // {
+    //     auto context_data_ptr = context.get_context_data(parms_id_);
 
-        // Set up a PRNG from the given info and sample the second polynomial
-        auto prng = prng_info.make_prng();
-        if (!prng)
-        {
-            throw logic_error("unsupported prng_type");
-        }
+    //     // Set up a PRNG from the given info and sample the second polynomial
+    //     auto prng = prng_info.make_prng();
+    //     if (!prng)
+    //     {
+    //         throw logic_error("unsupported prng_type");
+    //     }
 
-        if (version.major == 3 && version.minor >= 6)
-        {
-            sample_poly_uniform(prng, context_data_ptr->parms(), data(1));
-        }
-        else if (version.major == 3 && version.minor == 4)
-        {
-            sample_poly_uniform_seal_3_4(prng, context_data_ptr->parms(), data(1));
-        }
-        else if (version.major == 3 && version.minor == 5)
-        {
-            sample_poly_uniform_seal_3_5(prng, context_data_ptr->parms(), data(1));
-        }
-        else
-        {
-            // prior to v3.4, AES-128 was used, which is not compatible with later versions
-            throw logic_error("incompatible version");
-        }
-    }
+    //     if (version.major == 3 && version.minor >= 6)
+    //     {
+    //         sample_poly_uniform(prng, context_data_ptr->parms(), data(1));
+    //     }
+    //     else if (version.major == 3 && version.minor == 4)
+    //     {
+    //         sample_poly_uniform_seal_3_4(prng, context_data_ptr->parms(), data(1));
+    //     }
+    //     else if (version.major == 3 && version.minor == 5)
+    //     {
+    //         sample_poly_uniform_seal_3_5(prng, context_data_ptr->parms(), data(1));
+    //     }
+    //     else
+    //     {
+    //         // prior to v3.4, AES-128 was used, which is not compatible with later versions
+    //         throw logic_error("incompatible version");
+    //     }
+    // }
 
     // streamoff Ciphertext::save_size(compr_mode_type compr_mode) const
     // {

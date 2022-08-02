@@ -17,93 +17,93 @@ namespace seal
 {
     namespace util
     {
-        SEAL_NODISCARD inline std::string poly_to_hex_string(
-            const std::uint64_t *value, std::size_t coeff_count, std::size_t coeff_uint64_count)
-        {
-#ifdef SEAL_DEBUG
-            if (!value)
-            {
-                throw std::invalid_argument("value");
-            }
-#endif
-            // First check if there is anything to print
-            if (!coeff_count || !coeff_uint64_count)
-            {
-                return "0";
-            }
+//         SEAL_NODISCARD inline std::string poly_to_hex_string(
+//             const std::uint64_t *value, std::size_t coeff_count, std::size_t coeff_uint64_count)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!value)
+//             {
+//                 throw std::invalid_argument("value");
+//             }
+// #endif
+//             // First check if there is anything to print
+//             if (!coeff_count || !coeff_uint64_count)
+//             {
+//                 return "0";
+//             }
 
-            std::ostringstream result;
-            bool empty = true;
-            value += util::mul_safe(coeff_count - 1, coeff_uint64_count);
-            while (coeff_count--)
-            {
-                if (is_zero_uint(value, coeff_uint64_count))
-                {
-                    value -= coeff_uint64_count;
-                    continue;
-                }
-                if (!empty)
-                {
-                    result << " + ";
-                }
-                result << uint_to_hex_string(value, coeff_uint64_count);
-                if (coeff_count)
-                {
-                    result << "x^" << coeff_count;
-                }
-                empty = false;
-                value -= coeff_uint64_count;
-            }
-            if (empty)
-            {
-                result << "0";
-            }
-            return result.str();
-        }
+//             std::ostringstream result;
+//             bool empty = true;
+//             value += util::mul_safe(coeff_count - 1, coeff_uint64_count);
+//             while (coeff_count--)
+//             {
+//                 if (is_zero_uint(value, coeff_uint64_count))
+//                 {
+//                     value -= coeff_uint64_count;
+//                     continue;
+//                 }
+//                 if (!empty)
+//                 {
+//                     result << " + ";
+//                 }
+//                 result << uint_to_hex_string(value, coeff_uint64_count);
+//                 if (coeff_count)
+//                 {
+//                     result << "x^" << coeff_count;
+//                 }
+//                 empty = false;
+//                 value -= coeff_uint64_count;
+//             }
+//             if (empty)
+//             {
+//                 result << "0";
+//             }
+//             return result.str();
+//         }
 
-        SEAL_NODISCARD inline std::string poly_to_dec_string(
-            const std::uint64_t *value, std::size_t coeff_count, std::size_t coeff_uint64_count, MemoryPool &pool)
-        {
-#ifdef SEAL_DEBUG
-            if (!value)
-            {
-                throw std::invalid_argument("value");
-            }
-#endif
-            // First check if there is anything to print
-            if (!coeff_count || !coeff_uint64_count)
-            {
-                return "0";
-            }
+//         SEAL_NODISCARD inline std::string poly_to_dec_string(
+//             const std::uint64_t *value, std::size_t coeff_count, std::size_t coeff_uint64_count, MemoryPool &pool)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!value)
+//             {
+//                 throw std::invalid_argument("value");
+//             }
+// #endif
+//             // First check if there is anything to print
+//             if (!coeff_count || !coeff_uint64_count)
+//             {
+//                 return "0";
+//             }
 
-            std::ostringstream result;
-            bool empty = true;
-            value += coeff_count - 1;
-            while (coeff_count--)
-            {
-                if (is_zero_uint(value, coeff_uint64_count))
-                {
-                    value -= coeff_uint64_count;
-                    continue;
-                }
-                if (!empty)
-                {
-                    result << " + ";
-                }
-                result << uint_to_dec_string(value, coeff_uint64_count, pool);
-                if (coeff_count)
-                {
-                    result << "x^" << coeff_count;
-                }
-                empty = false;
-                value -= coeff_uint64_count;
-            }
-            if (empty)
-            {
-                result << "0";
-            }
-            return result.str();
-        }
+//             std::ostringstream result;
+//             bool empty = true;
+//             value += coeff_count - 1;
+//             while (coeff_count--)
+//             {
+//                 if (is_zero_uint(value, coeff_uint64_count))
+//                 {
+//                     value -= coeff_uint64_count;
+//                     continue;
+//                 }
+//                 if (!empty)
+//                 {
+//                     result << " + ";
+//                 }
+//                 result << uint_to_dec_string(value, coeff_uint64_count, pool);
+//                 if (coeff_count)
+//                 {
+//                     result << "x^" << coeff_count;
+//                 }
+//                 empty = false;
+//                 value -= coeff_uint64_count;
+//             }
+//             if (empty)
+//             {
+//                 result << "0";
+//             }
+//             return result.str();
+//         }
 
         SEAL_NODISCARD inline auto allocate_poly(
             std::size_t coeff_count, std::size_t coeff_uint64_count, MemoryPool &pool)

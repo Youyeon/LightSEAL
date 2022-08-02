@@ -88,118 +88,118 @@ namespace seal
         }
     } // namespace
 
-    Plaintext &Plaintext::operator=(const string &hex_poly)
-    {
-        if (is_ntt_form())
-        {
-            throw logic_error("cannot set an NTT transformed Plaintext");
-        }
-        if (unsigned_gt(hex_poly.size(), numeric_limits<int>::max()))
-        {
-            throw invalid_argument("hex_poly too long");
-        }
-        int length = safe_cast<int>(hex_poly.size());
+    // Plaintext &Plaintext::operator=(const string &hex_poly)
+    // {
+    //     if (is_ntt_form())
+    //     {
+    //         throw logic_error("cannot set an NTT transformed Plaintext");
+    //     }
+    //     if (unsigned_gt(hex_poly.size(), numeric_limits<int>::max()))
+    //     {
+    //         throw invalid_argument("hex_poly too long");
+    //     }
+    //     int length = safe_cast<int>(hex_poly.size());
 
-        // Determine size needed to store string coefficient.
-        int assign_coeff_count = 0;
+    //     // Determine size needed to store string coefficient.
+    //     int assign_coeff_count = 0;
 
-        int assign_coeff_bit_count = 0;
-        int pos = 0;
-        int last_power = safe_cast<int>(min(data_.max_size(), safe_cast<size_t>(numeric_limits<int>::max())));
-        const char *hex_poly_ptr = hex_poly.data();
-        while (pos < length)
-        {
-            // Determine length of coefficient starting at pos.
-            int coeff_length = get_coeff_length(hex_poly_ptr + pos);
-            if (coeff_length == 0)
-            {
-                throw invalid_argument("unable to parse hex_poly");
-            }
+    //     int assign_coeff_bit_count = 0;
+    //     int pos = 0;
+    //     int last_power = safe_cast<int>(min(data_.max_size(), safe_cast<size_t>(numeric_limits<int>::max())));
+    //     const char *hex_poly_ptr = hex_poly.data();
+    //     while (pos < length)
+    //     {
+    //         // Determine length of coefficient starting at pos.
+    //         int coeff_length = get_coeff_length(hex_poly_ptr + pos);
+    //         if (coeff_length == 0)
+    //         {
+    //             throw invalid_argument("unable to parse hex_poly");
+    //         }
 
-            // Determine bit length of coefficient.
-            int coeff_bit_count = get_hex_string_bit_count(hex_poly_ptr + pos, coeff_length);
-            if (coeff_bit_count > assign_coeff_bit_count)
-            {
-                assign_coeff_bit_count = coeff_bit_count;
-            }
-            pos += coeff_length;
+    //         // Determine bit length of coefficient.
+    //         int coeff_bit_count = get_hex_string_bit_count(hex_poly_ptr + pos, coeff_length);
+    //         if (coeff_bit_count > assign_coeff_bit_count)
+    //         {
+    //             assign_coeff_bit_count = coeff_bit_count;
+    //         }
+    //         pos += coeff_length;
 
-            // Extract power-term.
-            int power_length = 0;
-            int power = get_coeff_power(hex_poly_ptr + pos, &power_length);
-            if (power == -1 || power >= last_power)
-            {
-                throw invalid_argument("unable to parse hex_poly");
-            }
-            if (assign_coeff_count == 0)
-            {
-                assign_coeff_count = power + 1;
-            }
-            pos += power_length;
-            last_power = power;
+    //         // Extract power-term.
+    //         int power_length = 0;
+    //         int power = get_coeff_power(hex_poly_ptr + pos, &power_length);
+    //         if (power == -1 || power >= last_power)
+    //         {
+    //             throw invalid_argument("unable to parse hex_poly");
+    //         }
+    //         if (assign_coeff_count == 0)
+    //         {
+    //             assign_coeff_count = power + 1;
+    //         }
+    //         pos += power_length;
+    //         last_power = power;
 
-            // Extract plus (unless it is the end).
-            int plus_length = get_plus(hex_poly_ptr + pos);
-            if (plus_length == -1)
-            {
-                throw invalid_argument("unable to parse hex_poly");
-            }
-            pos += plus_length;
-        }
+    //         // Extract plus (unless it is the end).
+    //         int plus_length = get_plus(hex_poly_ptr + pos);
+    //         if (plus_length == -1)
+    //         {
+    //             throw invalid_argument("unable to parse hex_poly");
+    //         }
+    //         pos += plus_length;
+    //     }
 
-        // If string is empty, then done.
-        if (assign_coeff_count == 0 || assign_coeff_bit_count == 0)
-        {
-            set_zero();
-            return *this;
-        }
+    //     // If string is empty, then done.
+    //     if (assign_coeff_count == 0 || assign_coeff_bit_count == 0)
+    //     {
+    //         set_zero();
+    //         return *this;
+    //     }
 
-        // Resize polynomial.
-        if (assign_coeff_bit_count > bits_per_uint64)
-        {
-            throw invalid_argument("hex_poly has too large coefficients");
-        }
-        resize(safe_cast<size_t>(assign_coeff_count));
+    //     // Resize polynomial.
+    //     if (assign_coeff_bit_count > bits_per_uint64)
+    //     {
+    //         throw invalid_argument("hex_poly has too large coefficients");
+    //     }
+    //     resize(safe_cast<size_t>(assign_coeff_count));
 
-        // Populate polynomial from string.
-        pos = 0;
-        last_power = safe_cast<int>(coeff_count());
-        while (pos < length)
-        {
-            // Determine length of coefficient starting at pos.
-            const char *coeff_start = hex_poly_ptr + pos;
-            int coeff_length = get_coeff_length(coeff_start);
-            pos += coeff_length;
+    //     // Populate polynomial from string.
+    //     pos = 0;
+    //     last_power = safe_cast<int>(coeff_count());
+    //     while (pos < length)
+    //     {
+    //         // Determine length of coefficient starting at pos.
+    //         const char *coeff_start = hex_poly_ptr + pos;
+    //         int coeff_length = get_coeff_length(coeff_start);
+    //         pos += coeff_length;
 
-            // Extract power-term.
-            int power_length = 0;
-            int power = get_coeff_power(hex_poly_ptr + pos, &power_length);
-            pos += power_length;
+    //         // Extract power-term.
+    //         int power_length = 0;
+    //         int power = get_coeff_power(hex_poly_ptr + pos, &power_length);
+    //         pos += power_length;
 
-            // Extract plus (unless it is the end).
-            int plus_length = get_plus(hex_poly_ptr + pos);
-            pos += plus_length;
+    //         // Extract plus (unless it is the end).
+    //         int plus_length = get_plus(hex_poly_ptr + pos);
+    //         pos += plus_length;
 
-            // Zero coefficients not set by string.
-            for (int zero_power = last_power - 1; zero_power > power; --zero_power)
-            {
-                data_[static_cast<size_t>(zero_power)] = 0;
-            }
+    //         // Zero coefficients not set by string.
+    //         for (int zero_power = last_power - 1; zero_power > power; --zero_power)
+    //         {
+    //             data_[static_cast<size_t>(zero_power)] = 0;
+    //         }
 
-            // Populate coefficient.
-            uint64_t *coeff_ptr = data_.begin() + power;
-            hex_string_to_uint(coeff_start, coeff_length, size_t(1), coeff_ptr);
-            last_power = power;
-        }
+    //         // Populate coefficient.
+    //         uint64_t *coeff_ptr = data_.begin() + power;
+    //         hex_string_to_uint(coeff_start, coeff_length, size_t(1), coeff_ptr);
+    //         last_power = power;
+    //     }
 
-        // Zero coefficients not set by string.
-        for (int zero_power = last_power - 1; zero_power >= 0; --zero_power)
-        {
-            data_[static_cast<size_t>(zero_power)] = 0;
-        }
+    //     // Zero coefficients not set by string.
+    //     for (int zero_power = last_power - 1; zero_power >= 0; --zero_power)
+    //     {
+    //         data_[static_cast<size_t>(zero_power)] = 0;
+    //     }
 
-        return *this;
-    }
+    //     return *this;
+    // }
 
     // void Plaintext::save_members(ostream &stream) const
     // {

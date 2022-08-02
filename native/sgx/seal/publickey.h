@@ -25,8 +25,8 @@ namespace seal
     */
     class PublicKey
     {
-        friend class KeyGenerator;
-        friend class KSwitchKeys;
+        //friend class KeyGenerator;
+        //friend class KSwitchKeys;
 
     public:
         /**

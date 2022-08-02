@@ -162,11 +162,11 @@ namespace seal
         format
         @throws std::invalid_argument if pool is uninitialized
         */
-        Plaintext(const std::string &hex_poly, MemoryPoolHandle pool = MemoryManager::GetPool())
-            : data_(std::move(pool))
-        {
-            operator=(hex_poly);
-        }
+        // Plaintext(const std::string &hex_poly, MemoryPoolHandle pool = MemoryManager::GetPool())
+        //     : data_(std::move(pool))
+        // {
+        //     operator=(hex_poly);
+        // }
 
         /**
         Creates a new plaintext by copying a given one.
@@ -288,13 +288,13 @@ namespace seal
         allowed
         8. Other than the +, no other terms should have whitespace
 
-        @param[in] hex_poly The formatted polynomial string specifying the plaintext
-        polynomial
-        @throws std::invalid_argument if hex_poly does not adhere to the expected
-        format
-        @throws std::invalid_argument if the coefficients of hex_poly are too wide
-        */
-        Plaintext &operator=(const std::string &hex_poly);
+        // @param[in] hex_poly The formatted polynomial string specifying the plaintext
+        // polynomial
+        // @throws std::invalid_argument if hex_poly does not adhere to the expected
+        // format
+        // @throws std::invalid_argument if the coefficients of hex_poly are too wide
+        // */
+        // Plaintext &operator=(const std::string &hex_poly);
 
         /**
         Sets the value of the current plaintext to a given constant polynomial and
@@ -570,7 +570,7 @@ namespace seal
         SEAL_NODISCARD inline void set_parms_id(T* parms_id) noexcept
         {
             util::HashFunction::hash_block_type new_arr;
-            for (int i=0;i<new_arr.size();i++) {
+            for (std::size_t i=0;i<new_arr.size();i++) {
                 new_arr[i] = parms_id[i]; // new_arr.size() = 4 (hash.h)
             }
             parms_id_ = new_arr;

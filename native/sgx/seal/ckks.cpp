@@ -213,60 +213,60 @@ namespace seal
         destination.scale() = scale;
     }
 
-    void CKKSEncoder::encode_internal(int64_t value, parms_id_type parms_id, Plaintext &destination)
-    {
-        // Verify parameters.
-        auto context_data_ptr = context_.get_context_data(parms_id);
-        if (!context_data_ptr)
-        {
-            throw invalid_argument("parms_id is not valid for encryption parameters");
-        }
+    // void CKKSEncoder::encode_internal(int64_t value, parms_id_type parms_id, Plaintext &destination)
+    // {
+    //     // Verify parameters.
+    //     auto context_data_ptr = context_.get_context_data(parms_id);
+    //     if (!context_data_ptr)
+    //     {
+    //         throw invalid_argument("parms_id is not valid for encryption parameters");
+    //     }
 
-        auto &context_data = *context_data_ptr;
-        auto &parms = context_data.parms();
-        auto &coeff_modulus = parms.coeff_modulus();
-        size_t coeff_modulus_size = coeff_modulus.size();
-        size_t coeff_count = parms.poly_modulus_degree();
+    //     auto &context_data = *context_data_ptr;
+    //     auto &parms = context_data.parms();
+    //     auto &coeff_modulus = parms.coeff_modulus();
+    //     size_t coeff_modulus_size = coeff_modulus.size();
+    //     size_t coeff_count = parms.poly_modulus_degree();
 
-        // Quick sanity check
-        if (!product_fits_in(coeff_modulus_size, coeff_count))
-        {
-            throw logic_error("invalid parameters");
-        }
+    //     // Quick sanity check
+    //     if (!product_fits_in(coeff_modulus_size, coeff_count))
+    //     {
+    //         throw logic_error("invalid parameters");
+    //     }
 
-        int coeff_bit_count = get_significant_bit_count(static_cast<uint64_t>(llabs(value))) + 2;
-        if (coeff_bit_count >= context_data.total_coeff_modulus_bit_count())
-        {
-            throw invalid_argument("encoded value is too large");
-        }
+    //     int coeff_bit_count = get_significant_bit_count(static_cast<uint64_t>(llabs(value))) + 2;
+    //     if (coeff_bit_count >= context_data.total_coeff_modulus_bit_count())
+    //     {
+    //         throw invalid_argument("encoded value is too large");
+    //     }
 
-        // Resize destination to appropriate size
-        // Need to first set parms_id to zero, otherwise resize
-        // will throw an exception.
-        destination.parms_id() = parms_id_zero;
-        destination.resize(coeff_count * coeff_modulus_size);
+    //     // Resize destination to appropriate size
+    //     // Need to first set parms_id to zero, otherwise resize
+    //     // will throw an exception.
+    //     destination.parms_id() = parms_id_zero;
+    //     destination.resize(coeff_count * coeff_modulus_size);
 
-        if (value < 0)
-        {
-            for (size_t j = 0; j < coeff_modulus_size; j++)
-            {
-                uint64_t tmp = static_cast<uint64_t>(value);
-                tmp += coeff_modulus[j].value();
-                tmp = barrett_reduce_64(tmp, coeff_modulus[j]);
-                fill_n(destination.data() + (j * coeff_count), coeff_count, tmp);
-            }
-        }
-        else
-        {
-            for (size_t j = 0; j < coeff_modulus_size; j++)
-            {
-                uint64_t tmp = static_cast<uint64_t>(value);
-                tmp = barrett_reduce_64(tmp, coeff_modulus[j]);
-                fill_n(destination.data() + (j * coeff_count), coeff_count, tmp);
-            }
-        }
+    //     if (value < 0)
+    //     {
+    //         for (size_t j = 0; j < coeff_modulus_size; j++)
+    //         {
+    //             uint64_t tmp = static_cast<uint64_t>(value);
+    //             tmp += coeff_modulus[j].value();
+    //             tmp = barrett_reduce_64(tmp, coeff_modulus[j]);
+    //             fill_n(destination.data() + (j * coeff_count), coeff_count, tmp);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         for (size_t j = 0; j < coeff_modulus_size; j++)
+    //         {
+    //             uint64_t tmp = static_cast<uint64_t>(value);
+    //             tmp = barrett_reduce_64(tmp, coeff_modulus[j]);
+    //             fill_n(destination.data() + (j * coeff_count), coeff_count, tmp);
+    //         }
+    //     }
 
-        destination.parms_id() = parms_id;
-        destination.scale() = 1.0;
-    }
+    //     destination.parms_id() = parms_id;
+    //     destination.scale() = 1.0;
+    // }
 } // namespace seal

@@ -39,53 +39,53 @@ namespace seal
         }
     }
 
-    Encryptor::Encryptor(const SEALContext &context, const SecretKey &secret_key) : context_(context)
-    {
-        // Verify parameters
-        if (!context_.parameters_set())
-        {
-            throw invalid_argument("encryption parameters are not set correctly");
-        }
+    // Encryptor::Encryptor(const SEALContext &context, const SecretKey &secret_key) : context_(context)
+    // {
+    //     // Verify parameters
+    //     if (!context_.parameters_set())
+    //     {
+    //         throw invalid_argument("encryption parameters are not set correctly");
+    //     }
 
-        set_secret_key(secret_key);
+    //     set_secret_key(secret_key);
 
-        auto &parms = context_.key_context_data()->parms();
-        auto &coeff_modulus = parms.coeff_modulus();
-        size_t coeff_count = parms.poly_modulus_degree();
-        size_t coeff_modulus_size = coeff_modulus.size();
+    //     auto &parms = context_.key_context_data()->parms();
+    //     auto &coeff_modulus = parms.coeff_modulus();
+    //     size_t coeff_count = parms.poly_modulus_degree();
+    //     size_t coeff_modulus_size = coeff_modulus.size();
 
-        // Quick sanity check
-        if (!product_fits_in(coeff_count, coeff_modulus_size, size_t(2)))
-        {
-            throw logic_error("invalid parameters");
-        }
-    }
+    //     // Quick sanity check
+    //     if (!product_fits_in(coeff_count, coeff_modulus_size, size_t(2)))
+    //     {
+    //         throw logic_error("invalid parameters");
+    //     }
+    // }
 
-    Encryptor::Encryptor(const SEALContext &context, const PublicKey &public_key, const SecretKey &secret_key)
-        : context_(context)
-    {
-        // Verify parameters
-        if (!context_.parameters_set())
-        {
-            throw invalid_argument("encryption parameters are not set correctly");
-        }
+    // Encryptor::Encryptor(const SEALContext &context, const PublicKey &public_key, const SecretKey &secret_key)
+    //     : context_(context)
+    // {
+    //     // Verify parameters
+    //     if (!context_.parameters_set())
+    //     {
+    //         throw invalid_argument("encryption parameters are not set correctly");
+    //     }
 
-        set_public_key(public_key);
-        set_secret_key(secret_key);
+    //     set_public_key(public_key);
+    //     set_secret_key(secret_key);
 
-        auto &parms = context_.key_context_data()->parms();
-        auto &coeff_modulus = parms.coeff_modulus();
-        size_t coeff_count = parms.poly_modulus_degree();
-        size_t coeff_modulus_size = coeff_modulus.size();
+    //     auto &parms = context_.key_context_data()->parms();
+    //     auto &coeff_modulus = parms.coeff_modulus();
+    //     size_t coeff_count = parms.poly_modulus_degree();
+    //     size_t coeff_modulus_size = coeff_modulus.size();
 
-        // Quick sanity check
-        if (!product_fits_in(coeff_count, coeff_modulus_size, size_t(2)))
-        {
-            throw logic_error("invalid parameters");
-        }
-    }
+    //     // Quick sanity check
+    //     if (!product_fits_in(coeff_count, coeff_modulus_size, size_t(2)))
+    //     {
+    //         throw logic_error("invalid parameters");
+    //     }
+    // }
 
-    void Encryptor::encrypt_zero_internal(
+    void Encryptor::encrypt_zero_internal( //SOR
         parms_id_type parms_id, bool is_asymmetric, bool save_seed, Ciphertext &destination,
         MemoryPoolHandle pool) const
     {
@@ -111,7 +111,7 @@ namespace seal
         {
             is_ntt_form = true;
         }
-        else if (parms.scheme() != scheme_type::bfv)
+        else
         {
             throw invalid_argument("unsupported scheme");
         }
@@ -141,10 +141,10 @@ namespace seal
                         rns_tool->divide_and_round_q_last_ntt_inplace(
                             get<0>(I), prev_context_data.small_ntt_tables(), pool);
                     }
-                    else
-                    {
-                        rns_tool->divide_and_round_q_last_inplace(get<0>(I), pool);
-                    }
+                    // else
+                    // {
+                    //     rns_tool->divide_and_round_q_last_inplace(get<0>(I), pool);
+                    // }
                     set_poly(get<0>(I), coeff_count, coeff_modulus_size, get<1>(I));
                 });
 
@@ -158,14 +158,14 @@ namespace seal
                 util::encrypt_zero_asymmetric(public_key_, context_, parms_id, is_ntt_form, destination);
             }
         }
-        else
-        {
-            // Does not require modulus switching
-            util::encrypt_zero_symmetric(secret_key_, context_, parms_id, is_ntt_form, save_seed, destination);
-        }
+        // else
+        // {
+        //     // Does not require modulus switching
+        //     util::encrypt_zero_symmetric(secret_key_, context_, parms_id, is_ntt_form, save_seed, destination);
+        // }
     }
 
-    void Encryptor::encrypt_internal(
+    void Encryptor::encrypt_internal( //SOR
         const Plaintext &plain, bool is_asymmetric, bool save_seed, Ciphertext &destination,
         MemoryPoolHandle pool) const
     {
@@ -177,13 +177,13 @@ namespace seal
                 throw logic_error("public key is not set");
             }
         }
-        else
-        {
-            if (!is_metadata_valid_for(secret_key_, context_))
-            {
-                throw logic_error("secret key is not set");
-            }
-        }
+        // else
+        // {
+        //     if (!is_metadata_valid_for(secret_key_, context_))
+        //     {
+        //         throw logic_error("secret key is not set");
+        //     }
+        // }
 
         // Verify that plain is valid.
         if (!is_metadata_valid_for(plain, context_) || !is_buffer_valid(plain))

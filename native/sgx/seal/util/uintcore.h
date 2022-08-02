@@ -16,51 +16,51 @@ namespace seal
 {
     namespace util
     {
-        SEAL_NODISCARD std::string uint_to_hex_string(const std::uint64_t *value, std::size_t uint64_count);
+        // SEAL_NODISCARD std::string uint_to_hex_string(const std::uint64_t *value, std::size_t uint64_count);
 
-        SEAL_NODISCARD std::string uint_to_dec_string(
-            const std::uint64_t *value, std::size_t uint64_count, MemoryPool &pool);
+        // SEAL_NODISCARD std::string uint_to_dec_string(
+        //     const std::uint64_t *value, std::size_t uint64_count, MemoryPool &pool);
 
-        inline void hex_string_to_uint(
-            const char *hex_string, int char_count, std::size_t uint64_count, std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!hex_string && char_count > 0)
-            {
-                throw std::invalid_argument("hex_string");
-            }
-            if (uint64_count && !result)
-            {
-                throw std::invalid_argument("result");
-            }
-            if (unsigned_gt(
-                    get_hex_string_bit_count(hex_string, char_count),
-                    mul_safe(uint64_count, static_cast<size_t>(bits_per_uint64))))
-            {
-                throw std::invalid_argument("hex_string");
-            }
-#endif
-            const char *hex_string_ptr = hex_string + char_count;
-            for (std::size_t uint64_index = 0; uint64_index < uint64_count; uint64_index++)
-            {
-                std::uint64_t value = 0;
-                for (int bit_index = 0; bit_index < bits_per_uint64; bit_index += bits_per_nibble)
-                {
-                    if (hex_string_ptr == hex_string)
-                    {
-                        break;
-                    }
-                    char hex = *--hex_string_ptr;
-                    int nibble = hex_to_nibble(hex);
-                    if (nibble == -1)
-                    {
-                        throw std::invalid_argument("hex_value");
-                    }
-                    value |= static_cast<std::uint64_t>(nibble) << bit_index;
-                }
-                result[uint64_index] = value;
-            }
-        }
+//         inline void hex_string_to_uint(
+//             const char *hex_string, int char_count, std::size_t uint64_count, std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!hex_string && char_count > 0)
+//             {
+//                 throw std::invalid_argument("hex_string");
+//             }
+//             if (uint64_count && !result)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+//             if (unsigned_gt(
+//                     get_hex_string_bit_count(hex_string, char_count),
+//                     mul_safe(uint64_count, static_cast<size_t>(bits_per_uint64))))
+//             {
+//                 throw std::invalid_argument("hex_string");
+//             }
+// #endif
+//             const char *hex_string_ptr = hex_string + char_count;
+//             for (std::size_t uint64_index = 0; uint64_index < uint64_count; uint64_index++)
+//             {
+//                 std::uint64_t value = 0;
+//                 for (int bit_index = 0; bit_index < bits_per_uint64; bit_index += bits_per_nibble)
+//                 {
+//                     if (hex_string_ptr == hex_string)
+//                     {
+//                         break;
+//                     }
+//                     char hex = *--hex_string_ptr;
+//                     int nibble = hex_to_nibble(hex);
+//                     if (nibble == -1)
+//                     {
+//                         throw std::invalid_argument("hex_value");
+//                     }
+//                     value |= static_cast<std::uint64_t>(nibble) << bit_index;
+//                 }
+//                 result[uint64_index] = value;
+//             }
+//         }
 
         SEAL_NODISCARD inline auto allocate_uint(std::size_t uint64_count, MemoryPool &pool)
         {

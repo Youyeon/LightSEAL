@@ -62,24 +62,24 @@ namespace seal
         Creates an Encryptor instance initialized with the specified SEALContext
         and secret key.
 
-        @param[in] context The SEALContext
-        @param[in] secret_key The secret key
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::invalid_argument if secret_key is not valid
-        */
-        Encryptor(const SEALContext &context, const SecretKey &secret_key);
+        // @param[in] context The SEALContext
+        // @param[in] secret_key The secret key
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::invalid_argument if secret_key is not valid
+        // */
+        // Encryptor(const SEALContext &context, const SecretKey &secret_key);
 
         /**
         Creates an Encryptor instance initialized with the specified SEALContext,
         secret key, and public key.
 
-        @param[in] context The SEALContext
-        @param[in] public_key The public key
-        @param[in] secret_key The secret key
-        @throws std::invalid_argument if the encryption parameters are not valid
-        @throws std::invalid_argument if public_key or secret_key is not valid
-        */
-        Encryptor(const SEALContext &context, const PublicKey &public_key, const SecretKey &secret_key);
+        // @param[in] context The SEALContext
+        // @param[in] public_key The public key
+        // @param[in] secret_key The secret key
+        // @throws std::invalid_argument if the encryption parameters are not valid
+        // @throws std::invalid_argument if public_key or secret_key is not valid
+        // */
+        // Encryptor(const SEALContext &context, const PublicKey &public_key, const SecretKey &secret_key);
 
         /**
         Give a new instance of public key.
@@ -99,17 +99,17 @@ namespace seal
         /**
         Give a new instance of secret key.
 
-        @param[in] secret_key The secret key
-        @throws std::invalid_argument if secret_key is not valid
-        */
-        inline void set_secret_key(const SecretKey &secret_key)
-        {
-            if (!is_valid_for(secret_key, context_))
-            {
-                throw std::invalid_argument("secret key is not valid for encryption parameters");
-            }
-            secret_key_ = secret_key;
-        }
+        // @param[in] secret_key The secret key
+        // @throws std::invalid_argument if secret_key is not valid
+        // */
+        // inline void set_secret_key(const SecretKey &secret_key)
+        // {
+        //     if (!is_valid_for(secret_key, context_))
+        //     {
+        //         throw std::invalid_argument("secret key is not valid for encryption parameters");
+        //     }
+        //     secret_key_ = secret_key;
+        // }
 
         /**
         Encrypts a plaintext with the public key and stores the result in
@@ -131,7 +131,7 @@ namespace seal
         @throws std::invalid_argument if plain is not in default NTT form
         @throws std::invalid_argument if pool is uninitialized
         */
-        inline void encrypt(
+        inline void encrypt( //SOR
             const Plaintext &plain, Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
         {
             encrypt_internal(plain, true, false, destination, pool);
@@ -258,21 +258,21 @@ namespace seal
         Dynamic memory allocations in the process are allocated from the memory
         pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] plain The plaintext to encrypt
-        @param[out] destination The ciphertext to overwrite with the encrypted
-        plaintext
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if a secret key is not set
-        @throws std::invalid_argument if plain is not valid for the encryption
-        parameters
-        @throws std::invalid_argument if plain is not in default NTT form
-        @throws std::invalid_argument if pool is uninitialized
-        */
-        inline void encrypt_symmetric(
-            const Plaintext &plain, Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            encrypt_internal(plain, false, false, destination, pool);
-        }
+        // @param[in] plain The plaintext to encrypt
+        // @param[out] destination The ciphertext to overwrite with the encrypted
+        // plaintext
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if a secret key is not set
+        // @throws std::invalid_argument if plain is not valid for the encryption
+        // parameters
+        // @throws std::invalid_argument if plain is not in default NTT form
+        // @throws std::invalid_argument if pool is uninitialized
+        // */
+        // inline void encrypt_symmetric(
+        //     const Plaintext &plain, Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     encrypt_internal(plain, false, false, destination, pool);
+        // }
 
         /**
         Encrypts a plaintext with the secret key and returns the ciphertext as
@@ -313,20 +313,20 @@ namespace seal
         given parms_id. Dynamic memory allocations in the process are allocated
         from the memory pool pointed to by the given MemoryPoolHandle.
 
-        @param[in] parms_id The parms_id for the resulting ciphertext
-        @param[out] destination The ciphertext to overwrite with the encrypted
-        plaintext
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if a secret key is not set
-        @throws std::invalid_argument if parms_id is not valid for the encryption
-        parameters
-        @throws std::invalid_argument if pool is uninitialized
-        */
-        inline void encrypt_zero_symmetric(
-            parms_id_type parms_id, Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            encrypt_zero_internal(parms_id, false, false, destination, pool);
-        }
+        // @param[in] parms_id The parms_id for the resulting ciphertext
+        // @param[out] destination The ciphertext to overwrite with the encrypted
+        // plaintext
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if a secret key is not set
+        // @throws std::invalid_argument if parms_id is not valid for the encryption
+        // parameters
+        // @throws std::invalid_argument if pool is uninitialized
+        // */
+        // inline void encrypt_zero_symmetric(
+        //     parms_id_type parms_id, Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     encrypt_zero_internal(parms_id, false, false, destination, pool);
+        // }
 
         /**
         Encrypts a zero plaintext with the secret key and returns the ciphertext
@@ -365,17 +365,17 @@ namespace seal
         allocations in the process are allocated from the memory pool pointed to
         by the given MemoryPoolHandle.
 
-        @param[out] destination The ciphertext to overwrite with the encrypted
-        plaintext
-        @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
-        @throws std::logic_error if a secret key is not set
-        @throws std::invalid_argument if pool is uninitialized
-        */
-        inline void encrypt_zero_symmetric(
-            Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
-        {
-            encrypt_zero_symmetric(context_.first_parms_id(), destination, pool);
-        }
+        // @param[out] destination The ciphertext to overwrite with the encrypted
+        // plaintext
+        // @param[in] pool The MemoryPoolHandle pointing to a valid memory pool
+        // @throws std::logic_error if a secret key is not set
+        // @throws std::invalid_argument if pool is uninitialized
+        // */
+        // inline void encrypt_zero_symmetric(
+        //     Ciphertext &destination, MemoryPoolHandle pool = MemoryManager::GetPool()) const
+        // {
+        //     encrypt_zero_symmetric(context_.first_parms_id(), destination, pool);
+        // }
 
         /**
         Encrypts a zero plaintext with the secret key and returns the ciphertext
@@ -427,6 +427,6 @@ namespace seal
 
         PublicKey public_key_;
 
-        SecretKey secret_key_;
+        //SecretKey secret_key_;
     };
 } // namespace seal

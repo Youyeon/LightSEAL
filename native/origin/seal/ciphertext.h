@@ -686,7 +686,7 @@ namespace seal
         SEAL_NODISCARD inline void set_parms_id(T* parms_id) noexcept
         {
             util::HashFunction::hash_block_type new_arr;
-            for (int i=0;i<new_arr.size();i++) {
+            for (std::size_t i=0;i<new_arr.size();i++) {
                 new_arr[i] = parms_id[i]; // new_arr.size() = 4 (hash.h)
             }
             parms_id_ = new_arr;

@@ -20,7 +20,7 @@ set(SEAL_SOURCE_FILES ${SEAL_SOURCE_FILES}
     ${CMAKE_CURRENT_LIST_DIR}/rns.cpp
     #${CMAKE_CURRENT_LIST_DIR}/scalingvariant.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ntt.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/streambuf.cpp
+    #${CMAKE_CURRENT_LIST_DIR}/streambuf.cpp
     ${CMAKE_CURRENT_LIST_DIR}/uintarith.cpp
     ${CMAKE_CURRENT_LIST_DIR}/uintarithmod.cpp
     ${CMAKE_CURRENT_LIST_DIR}/uintarithsmallmod.cpp
@@ -57,7 +57,7 @@ install(
         ${CMAKE_CURRENT_LIST_DIR}/rns.h
         #${CMAKE_CURRENT_LIST_DIR}/scalingvariant.h
         ${CMAKE_CURRENT_LIST_DIR}/ntt.h
-        ${CMAKE_CURRENT_LIST_DIR}/streambuf.h
+        #${CMAKE_CURRENT_LIST_DIR}/streambuf.h
         ${CMAKE_CURRENT_LIST_DIR}/uintarith.h
         ${CMAKE_CURRENT_LIST_DIR}/uintarithmod.h
         ${CMAKE_CURRENT_LIST_DIR}/uintarithsmallmod.h

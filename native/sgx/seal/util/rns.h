@@ -199,7 +199,7 @@ namespace seal
             /**
             @param[in] input Must be in RNS form, i.e. coefficient must be less than the associated modulus.
             */
-            void divide_and_round_q_last_inplace(RNSIter input, MemoryPoolHandle pool) const;
+            //void divide_and_round_q_last_inplace(RNSIter input, MemoryPoolHandle pool) const;
 
             void divide_and_round_q_last_ntt_inplace(
                 RNSIter input, ConstNTTTablesIter rns_ntt_tables, MemoryPoolHandle pool) const;

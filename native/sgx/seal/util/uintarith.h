@@ -650,127 +650,127 @@ namespace seal
             }
         }
 
-        inline void half_round_up_uint(const std::uint64_t *operand, std::size_t uint64_count, std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand");
-            }
-            if (!result && uint64_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
-            if (!uint64_count)
-            {
-                return;
-            }
-            // Set result to (operand + 1) / 2. To prevent overflowing operand, right shift
-            // and then increment result if low-bit of operand was set.
-            bool low_bit_set = operand[0] & 1;
+//         inline void half_round_up_uint(const std::uint64_t *operand, std::size_t uint64_count, std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand");
+//             }
+//             if (!result && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
+//             if (!uint64_count)
+//             {
+//                 return;
+//             }
+//             // Set result to (operand + 1) / 2. To prevent overflowing operand, right shift
+//             // and then increment result if low-bit of operand was set.
+//             bool low_bit_set = operand[0] & 1;
 
-            for (std::size_t i = 0; i < uint64_count - 1; i++)
-            {
-                result[i] = (operand[i] >> 1) | (operand[i + 1] << (bits_per_uint64 - 1));
-            }
-            result[uint64_count - 1] = operand[uint64_count - 1] >> 1;
+//             for (std::size_t i = 0; i < uint64_count - 1; i++)
+//             {
+//                 result[i] = (operand[i] >> 1) | (operand[i + 1] << (bits_per_uint64 - 1));
+//             }
+//             result[uint64_count - 1] = operand[uint64_count - 1] >> 1;
 
-            if (low_bit_set)
-            {
-                increment_uint(result, uint64_count, result);
-            }
-        }
+//             if (low_bit_set)
+//             {
+//                 increment_uint(result, uint64_count, result);
+//             }
+//         }
 
-        inline void not_uint(const std::uint64_t *operand, std::size_t uint64_count, std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand");
-            }
-            if (!result && uint64_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
-            for (; uint64_count--; result++, operand++)
-            {
-                *result = ~*operand;
-            }
-        }
+//         inline void not_uint(const std::uint64_t *operand, std::size_t uint64_count, std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand");
+//             }
+//             if (!result && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
+//             for (; uint64_count--; result++, operand++)
+//             {
+//                 *result = ~*operand;
+//             }
+//         }
 
-        inline void and_uint(
-            const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
-            std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand1 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand1");
-            }
-            if (!operand2 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand2");
-            }
-            if (!result && uint64_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
-            for (; uint64_count--; result++, operand1++, operand2++)
-            {
-                *result = *operand1 & *operand2;
-            }
-        }
+//         inline void and_uint(
+//             const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
+//             std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand1 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand1");
+//             }
+//             if (!operand2 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand2");
+//             }
+//             if (!result && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
+//             for (; uint64_count--; result++, operand1++, operand2++)
+//             {
+//                 *result = *operand1 & *operand2;
+//             }
+//         }
 
-        inline void or_uint(
-            const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
-            std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand1 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand1");
-            }
-            if (!operand2 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand2");
-            }
-            if (!result && uint64_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
-            for (; uint64_count--; result++, operand1++, operand2++)
-            {
-                *result = *operand1 | *operand2;
-            }
-        }
+//         inline void or_uint(
+//             const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
+//             std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand1 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand1");
+//             }
+//             if (!operand2 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand2");
+//             }
+//             if (!result && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
+//             for (; uint64_count--; result++, operand1++, operand2++)
+//             {
+//                 *result = *operand1 | *operand2;
+//             }
+//         }
 
-        inline void xor_uint(
-            const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
-            std::uint64_t *result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand1 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand1");
-            }
-            if (!operand2 && uint64_count > 0)
-            {
-                throw std::invalid_argument("operand2");
-            }
-            if (!result && uint64_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
-            for (; uint64_count--; result++, operand1++, operand2++)
-            {
-                *result = *operand1 ^ *operand2;
-            }
-        }
+//         inline void xor_uint(
+//             const std::uint64_t *operand1, const std::uint64_t *operand2, std::size_t uint64_count,
+//             std::uint64_t *result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand1 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand1");
+//             }
+//             if (!operand2 && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("operand2");
+//             }
+//             if (!result && uint64_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
+//             for (; uint64_count--; result++, operand1++, operand2++)
+//             {
+//                 *result = *operand1 ^ *operand2;
+//             }
+//         }
 
         template <typename T, typename S, typename = std::enable_if_t<is_uint64_v<T, S>>>
         inline void multiply_uint64_generic(T operand1, S operand2, unsigned long long *result128)
@@ -996,8 +996,8 @@ namespace seal
 
         void divide_uint192_inplace(std::uint64_t *numerator, std::uint64_t denominator, std::uint64_t *quotient);
 
-        SEAL_NODISCARD std::uint64_t exponentiate_uint_safe(std::uint64_t operand, std::uint64_t exponent);
+//         SEAL_NODISCARD std::uint64_t exponentiate_uint_safe(std::uint64_t operand, std::uint64_t exponent);
 
-        SEAL_NODISCARD std::uint64_t exponentiate_uint(std::uint64_t operand, std::uint64_t exponent);
+//         SEAL_NODISCARD std::uint64_t exponentiate_uint(std::uint64_t operand, std::uint64_t exponent);
     } // namespace util
 } // namespace seal

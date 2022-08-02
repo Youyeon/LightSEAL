@@ -693,46 +693,46 @@ namespace seal
             });
         }
 
-        void RNSTool::divide_and_round_q_last_inplace(RNSIter input, MemoryPoolHandle pool) const
-        {
-#ifdef SEAL_DEBUG
-            if (!input)
-            {
-                throw invalid_argument("input cannot be null");
-            }
-            if (input.poly_modulus_degree() != coeff_count_)
-            {
-                throw invalid_argument("input is not valid for encryption parameters");
-            }
-            if (!pool)
-            {
-                throw invalid_argument("pool is uninitialized");
-            }
-#endif
-            size_t base_q_size = base_q_->size();
-            CoeffIter last_input = input[base_q_size - 1];
+//         void RNSTool::divide_and_round_q_last_inplace(RNSIter input, MemoryPoolHandle pool) const
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!input)
+//             {
+//                 throw invalid_argument("input cannot be null");
+//             }
+//             if (input.poly_modulus_degree() != coeff_count_)
+//             {
+//                 throw invalid_argument("input is not valid for encryption parameters");
+//             }
+//             if (!pool)
+//             {
+//                 throw invalid_argument("pool is uninitialized");
+//             }
+// #endif
+//             size_t base_q_size = base_q_->size();
+//             CoeffIter last_input = input[base_q_size - 1];
 
-            // Add (qi-1)/2 to change from flooring to rounding
-            Modulus last_modulus = (*base_q_)[base_q_size - 1];
-            uint64_t half = last_modulus.value() >> 1;
-            add_poly_scalar_coeffmod(last_input, coeff_count_, half, last_modulus, last_input);
+//             // Add (qi-1)/2 to change from flooring to rounding
+//             Modulus last_modulus = (*base_q_)[base_q_size - 1];
+//             uint64_t half = last_modulus.value() >> 1;
+//             add_poly_scalar_coeffmod(last_input, coeff_count_, half, last_modulus, last_input);
 
-            SEAL_ALLOCATE_GET_COEFF_ITER(temp, coeff_count_, pool);
-            SEAL_ITERATE(iter(input, inv_q_last_mod_q_, base_q_->base()), base_q_size - 1, [&](auto I) {
-                // (ct mod qk) mod qi
-                modulo_poly_coeffs(last_input, coeff_count_, get<2>(I), temp);
+//             SEAL_ALLOCATE_GET_COEFF_ITER(temp, coeff_count_, pool);
+//             SEAL_ITERATE(iter(input, inv_q_last_mod_q_, base_q_->base()), base_q_size - 1, [&](auto I) {
+//                 // (ct mod qk) mod qi
+//                 modulo_poly_coeffs(last_input, coeff_count_, get<2>(I), temp);
 
-                // Subtract rounding correction here; the negative sign will turn into a plus in the next subtraction
-                uint64_t half_mod = barrett_reduce_64(half, get<2>(I));
-                sub_poly_scalar_coeffmod(temp, coeff_count_, half_mod, get<2>(I), temp);
+//                 // Subtract rounding correction here; the negative sign will turn into a plus in the next subtraction
+//                 uint64_t half_mod = barrett_reduce_64(half, get<2>(I));
+//                 sub_poly_scalar_coeffmod(temp, coeff_count_, half_mod, get<2>(I), temp);
 
-                // (ct mod qi) - (ct mod qk) mod qi
-                sub_poly_coeffmod(get<0>(I), temp, coeff_count_, get<2>(I), get<0>(I));
+//                 // (ct mod qi) - (ct mod qk) mod qi
+//                 sub_poly_coeffmod(get<0>(I), temp, coeff_count_, get<2>(I), get<0>(I));
 
-                // qk^(-1) * ((ct mod qi) - (ct mod qk)) mod qi
-                multiply_poly_scalar_coeffmod(get<0>(I), coeff_count_, get<1>(I), get<2>(I), get<0>(I));
-            });
-        }
+//                 // qk^(-1) * ((ct mod qi) - (ct mod qk)) mod qi
+//                 multiply_poly_scalar_coeffmod(get<0>(I), coeff_count_, get<1>(I), get<2>(I), get<0>(I));
+//             });
+//         }
 
         void RNSTool::divide_and_round_q_last_ntt_inplace(
             RNSIter input, ConstNTTTablesIter rns_ntt_tables, MemoryPoolHandle pool) const

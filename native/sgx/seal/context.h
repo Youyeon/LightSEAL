@@ -347,10 +347,10 @@ namespace seal
             Return a pointer to BFV "Delta", i.e. coefficient modulus divided by
             plaintext modulus.
             */
-            SEAL_NODISCARD inline const util::MultiplyUIntModOperand *coeff_div_plain_modulus() const noexcept
-            {
-                return coeff_div_plain_modulus_.get();
-            }
+            // SEAL_NODISCARD inline const util::MultiplyUIntModOperand *coeff_div_plain_modulus() const noexcept
+            // {
+            //     return coeff_div_plain_modulus_.get();
+            // }
 
             /**
             Return the threshold for the upper half of integers modulo plain_modulus.
@@ -461,7 +461,7 @@ namespace seal
 
             int total_coeff_modulus_bit_count_ = 0;
 
-            util::Pointer<util::MultiplyUIntModOperand> coeff_div_plain_modulus_;
+            //util::Pointer<util::MultiplyUIntModOperand> coeff_div_plain_modulus_;
 
             std::uint64_t plain_upper_half_threshold_ = 0;
 

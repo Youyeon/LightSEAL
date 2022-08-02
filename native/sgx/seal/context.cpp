@@ -522,6 +522,7 @@ namespace seal
         }
     }
 
+    // for SGX
     SEALContext::SEALContext(
         uint64_t* context_parmid_key, uint64_t* context_parmid_first, uint64_t* context_parmid_last, std::unordered_map<parms_id_type, std::shared_ptr<const ContextData>> context_data_map, sec_level_type sec_level, MemoryPoolHandle pool)
         : context_data_map_(context_data_map), pool_(move(pool)), sec_level_(sec_level)

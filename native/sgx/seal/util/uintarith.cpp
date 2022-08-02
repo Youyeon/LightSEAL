@@ -536,78 +536,78 @@ namespace seal
             }
         }
 
-        uint64_t exponentiate_uint_safe(uint64_t operand, uint64_t exponent)
-        {
-            // Fast cases
-            if (exponent == 0)
-            {
-                return 1;
-            }
-            if (exponent == 1)
-            {
-                return operand;
-            }
+//         uint64_t exponentiate_uint_safe(uint64_t operand, uint64_t exponent)
+//         {
+//             // Fast cases
+//             if (exponent == 0)
+//             {
+//                 return 1;
+//             }
+//             if (exponent == 1)
+//             {
+//                 return operand;
+//             }
 
-            // Perform binary exponentiation.
-            uint64_t power = operand;
-            uint64_t product = 0;
-            uint64_t intermediate = 1;
+//             // Perform binary exponentiation.
+//             uint64_t power = operand;
+//             uint64_t product = 0;
+//             uint64_t intermediate = 1;
 
-            // Initially: power = operand and intermediate = 1, product irrelevant.
-            while (true)
-            {
-                if (exponent & 1)
-                {
-                    product = mul_safe(power, intermediate);
-                    swap(product, intermediate);
-                }
-                exponent >>= 1;
-                if (exponent == 0)
-                {
-                    break;
-                }
-                product = mul_safe(power, power);
-                swap(product, power);
-            }
+//             // Initially: power = operand and intermediate = 1, product irrelevant.
+//             while (true)
+//             {
+//                 if (exponent & 1)
+//                 {
+//                     product = mul_safe(power, intermediate);
+//                     swap(product, intermediate);
+//                 }
+//                 exponent >>= 1;
+//                 if (exponent == 0)
+//                 {
+//                     break;
+//                 }
+//                 product = mul_safe(power, power);
+//                 swap(product, power);
+//             }
 
-            return intermediate;
-        }
+//             return intermediate;
+//         }
 
-        uint64_t exponentiate_uint(uint64_t operand, uint64_t exponent)
-        {
-            // Fast cases
-            if (exponent == 0)
-            {
-                return 1;
-            }
-            if (exponent == 1)
-            {
-                return operand;
-            }
+//         uint64_t exponentiate_uint(uint64_t operand, uint64_t exponent)
+//         {
+//             // Fast cases
+//             if (exponent == 0)
+//             {
+//                 return 1;
+//             }
+//             if (exponent == 1)
+//             {
+//                 return operand;
+//             }
 
-            // Perform binary exponentiation.
-            uint64_t power = operand;
-            uint64_t product = 0;
-            uint64_t intermediate = 1;
+//             // Perform binary exponentiation.
+//             uint64_t power = operand;
+//             uint64_t product = 0;
+//             uint64_t intermediate = 1;
 
-            // Initially: power = operand and intermediate = 1, product irrelevant.
-            while (true)
-            {
-                if (exponent & 1)
-                {
-                    product = power * intermediate;
-                    swap(product, intermediate);
-                }
-                exponent >>= 1;
-                if (exponent == 0)
-                {
-                    break;
-                }
-                product = power * power;
-                swap(product, power);
-            }
+//             // Initially: power = operand and intermediate = 1, product irrelevant.
+//             while (true)
+//             {
+//                 if (exponent & 1)
+//                 {
+//                     product = power * intermediate;
+//                     swap(product, intermediate);
+//                 }
+//                 exponent >>= 1;
+//                 if (exponent == 0)
+//                 {
+//                     break;
+//                 }
+//                 product = power * power;
+//                 swap(product, power);
+//             }
 
-            return intermediate;
-        }
+//             return intermediate;
+//         }
     } // namespace util
 } // namespace seal

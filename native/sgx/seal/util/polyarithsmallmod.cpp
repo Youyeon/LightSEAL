@@ -85,50 +85,50 @@ namespace seal
 #endif
         }
 
-        void sub_poly_coeffmod(
-            ConstCoeffIter operand1, ConstCoeffIter operand2, std::size_t coeff_count, const Modulus &modulus,
-            CoeffIter result)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand1 && coeff_count > 0)
-            {
-                throw std::invalid_argument("operand1");
-            }
-            if (!operand2 && coeff_count > 0)
-            {
-                throw std::invalid_argument("operand2");
-            }
-            if (modulus.is_zero())
-            {
-                throw std::invalid_argument("modulus");
-            }
-            if (!result && coeff_count > 0)
-            {
-                throw std::invalid_argument("result");
-            }
-#endif
+//         void sub_poly_coeffmod(
+//             ConstCoeffIter operand1, ConstCoeffIter operand2, std::size_t coeff_count, const Modulus &modulus,
+//             CoeffIter result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand1 && coeff_count > 0)
+//             {
+//                 throw std::invalid_argument("operand1");
+//             }
+//             if (!operand2 && coeff_count > 0)
+//             {
+//                 throw std::invalid_argument("operand2");
+//             }
+//             if (modulus.is_zero())
+//             {
+//                 throw std::invalid_argument("modulus");
+//             }
+//             if (!result && coeff_count > 0)
+//             {
+//                 throw std::invalid_argument("result");
+//             }
+// #endif
 
-            const uint64_t modulus_value = modulus.value();
-#ifdef SEAL_USE_INTEL_HEXL
-            intel::hexl::EltwiseSubMod(result, operand1, operand2, coeff_count, modulus_value);
-#else
-            SEAL_ITERATE(iter(operand1, operand2, result), coeff_count, [&](auto I) {
-#ifdef SEAL_DEBUG
-                if (get<0>(I) >= modulus_value)
-                {
-                    throw std::invalid_argument("operand1");
-                }
-                if (get<1>(I) >= modulus_value)
-                {
-                    throw std::invalid_argument("operand2");
-                }
-#endif
-                unsigned long long temp_result;
-                std::int64_t borrow = sub_uint64(get<0>(I), get<1>(I), &temp_result);
-                get<2>(I) = temp_result + (modulus_value & static_cast<std::uint64_t>(-borrow));
-            });
-#endif
-        }
+//             const uint64_t modulus_value = modulus.value();
+// #ifdef SEAL_USE_INTEL_HEXL
+//             intel::hexl::EltwiseSubMod(result, operand1, operand2, coeff_count, modulus_value);
+// #else
+//             SEAL_ITERATE(iter(operand1, operand2, result), coeff_count, [&](auto I) {
+// #ifdef SEAL_DEBUG
+//                 if (get<0>(I) >= modulus_value)
+//                 {
+//                     throw std::invalid_argument("operand1");
+//                 }
+//                 if (get<1>(I) >= modulus_value)
+//                 {
+//                     throw std::invalid_argument("operand2");
+//                 }
+// #endif
+//                 unsigned long long temp_result;
+//                 std::int64_t borrow = sub_uint64(get<0>(I), get<1>(I), &temp_result);
+//                 get<2>(I) = temp_result + (modulus_value & static_cast<std::uint64_t>(-borrow));
+//             });
+// #endif
+//         }
 
         void add_poly_scalar_coeffmod(
             ConstCoeffIter poly, size_t coeff_count, uint64_t scalar, const Modulus &modulus, CoeffIter result)
@@ -162,37 +162,37 @@ namespace seal
 #endif
         }
 
-        void sub_poly_scalar_coeffmod(
-            ConstCoeffIter poly, size_t coeff_count, uint64_t scalar, const Modulus &modulus, CoeffIter result)
-        {
-#ifdef SEAL_DEBUG
-            if (!poly && coeff_count > 0)
-            {
-                throw invalid_argument("poly");
-            }
-            if (!result && coeff_count > 0)
-            {
-                throw invalid_argument("result");
-            }
-            if (modulus.is_zero())
-            {
-                throw invalid_argument("modulus");
-            }
-            if (scalar >= modulus.value())
-            {
-                throw invalid_argument("scalar");
-            }
-#endif
+//         void sub_poly_scalar_coeffmod(
+//             ConstCoeffIter poly, size_t coeff_count, uint64_t scalar, const Modulus &modulus, CoeffIter result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!poly && coeff_count > 0)
+//             {
+//                 throw invalid_argument("poly");
+//             }
+//             if (!result && coeff_count > 0)
+//             {
+//                 throw invalid_argument("result");
+//             }
+//             if (modulus.is_zero())
+//             {
+//                 throw invalid_argument("modulus");
+//             }
+//             if (scalar >= modulus.value())
+//             {
+//                 throw invalid_argument("scalar");
+//             }
+// #endif
 
-#ifdef SEAL_USE_INTEL_HEXL
-            intel::hexl::EltwiseSubMod(result, poly, scalar, coeff_count, modulus.value());
-#else
-            SEAL_ITERATE(iter(poly, result), coeff_count, [&](auto I) {
-                const uint64_t x = get<0>(I);
-                get<1>(I) = sub_uint_mod(x, scalar, modulus);
-            });
-#endif
-        }
+// #ifdef SEAL_USE_INTEL_HEXL
+//             intel::hexl::EltwiseSubMod(result, poly, scalar, coeff_count, modulus.value());
+// #else
+//             SEAL_ITERATE(iter(poly, result), coeff_count, [&](auto I) {
+//                 const uint64_t x = get<0>(I);
+//                 get<1>(I) = sub_uint_mod(x, scalar, modulus);
+//             });
+// #endif
+//         }
 
         void multiply_poly_scalar_coeffmod(
             ConstCoeffIter poly, size_t coeff_count, MultiplyUIntModOperand scalar, const Modulus &modulus,
@@ -283,89 +283,89 @@ namespace seal
 #endif
         }
 
-        uint64_t poly_infty_norm_coeffmod(ConstCoeffIter operand, size_t coeff_count, const Modulus &modulus)
-        {
-#ifdef SEAL_DEBUG
-            if (!operand && coeff_count > 0)
-            {
-                throw invalid_argument("operand");
-            }
-            if (modulus.is_zero())
-            {
-                throw invalid_argument("modulus");
-            }
-#endif
-            // Construct negative threshold (first negative modulus value) to compute absolute values of coeffs.
-            uint64_t modulus_neg_threshold = (modulus.value() + 1) >> 1;
+//         uint64_t poly_infty_norm_coeffmod(ConstCoeffIter operand, size_t coeff_count, const Modulus &modulus)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!operand && coeff_count > 0)
+//             {
+//                 throw invalid_argument("operand");
+//             }
+//             if (modulus.is_zero())
+//             {
+//                 throw invalid_argument("modulus");
+//             }
+// #endif
+//             // Construct negative threshold (first negative modulus value) to compute absolute values of coeffs.
+//             uint64_t modulus_neg_threshold = (modulus.value() + 1) >> 1;
 
-            // Mod out the poly coefficients and choose a symmetric representative from
-            // [-modulus,modulus). Keep track of the max.
-            uint64_t result = 0;
-            SEAL_ITERATE(operand, coeff_count, [&](auto I) {
-                uint64_t poly_coeff = barrett_reduce_64(I, modulus);
-                if (poly_coeff >= modulus_neg_threshold)
-                {
-                    poly_coeff = modulus.value() - poly_coeff;
-                }
-                if (poly_coeff > result)
-                {
-                    result = poly_coeff;
-                }
-            });
+//             // Mod out the poly coefficients and choose a symmetric representative from
+//             // [-modulus,modulus). Keep track of the max.
+//             uint64_t result = 0;
+//             SEAL_ITERATE(operand, coeff_count, [&](auto I) {
+//                 uint64_t poly_coeff = barrett_reduce_64(I, modulus);
+//                 if (poly_coeff >= modulus_neg_threshold)
+//                 {
+//                     poly_coeff = modulus.value() - poly_coeff;
+//                 }
+//                 if (poly_coeff > result)
+//                 {
+//                     result = poly_coeff;
+//                 }
+//             });
 
-            return result;
-        }
+//             return result;
+//         }
 
-        void negacyclic_shift_poly_coeffmod(
-            ConstCoeffIter poly, size_t coeff_count, size_t shift, const Modulus &modulus, CoeffIter result)
-        {
-#ifdef SEAL_DEBUG
-            if (!poly)
-            {
-                throw invalid_argument("poly");
-            }
-            if (!result)
-            {
-                throw invalid_argument("result");
-            }
-            if (poly == result)
-            {
-                throw invalid_argument("result cannot point to the same value as poly");
-            }
-            if (modulus.is_zero())
-            {
-                throw invalid_argument("modulus");
-            }
-            if (util::get_power_of_two(static_cast<uint64_t>(coeff_count)) < 0)
-            {
-                throw invalid_argument("coeff_count");
-            }
-            if (shift >= coeff_count)
-            {
-                throw invalid_argument("shift");
-            }
-#endif
-            // Nothing to do
-            if (shift == 0)
-            {
-                set_uint(poly, coeff_count, result);
-                return;
-            }
+//         void negacyclic_shift_poly_coeffmod(
+//             ConstCoeffIter poly, size_t coeff_count, size_t shift, const Modulus &modulus, CoeffIter result)
+//         {
+// #ifdef SEAL_DEBUG
+//             if (!poly)
+//             {
+//                 throw invalid_argument("poly");
+//             }
+//             if (!result)
+//             {
+//                 throw invalid_argument("result");
+//             }
+//             if (poly == result)
+//             {
+//                 throw invalid_argument("result cannot point to the same value as poly");
+//             }
+//             if (modulus.is_zero())
+//             {
+//                 throw invalid_argument("modulus");
+//             }
+//             if (util::get_power_of_two(static_cast<uint64_t>(coeff_count)) < 0)
+//             {
+//                 throw invalid_argument("coeff_count");
+//             }
+//             if (shift >= coeff_count)
+//             {
+//                 throw invalid_argument("shift");
+//             }
+// #endif
+//             // Nothing to do
+//             if (shift == 0)
+//             {
+//                 set_uint(poly, coeff_count, result);
+//                 return;
+//             }
 
-            uint64_t index_raw = shift;
-            uint64_t coeff_count_mod_mask = static_cast<uint64_t>(coeff_count) - 1;
-            for (size_t i = 0; i < coeff_count; i++, poly++, index_raw++)
-            {
-                uint64_t index = index_raw & coeff_count_mod_mask;
-                if (!(index_raw & static_cast<uint64_t>(coeff_count)) || !*poly)
-                {
-                    result[index] = *poly;
-                }
-                else
-                {
-                    result[index] = modulus.value() - *poly;
-                }
-            }
-        }
+//             uint64_t index_raw = shift;
+//             uint64_t coeff_count_mod_mask = static_cast<uint64_t>(coeff_count) - 1;
+//             for (size_t i = 0; i < coeff_count; i++, poly++, index_raw++)
+//             {
+//                 uint64_t index = index_raw & coeff_count_mod_mask;
+//                 if (!(index_raw & static_cast<uint64_t>(coeff_count)) || !*poly)
+//                 {
+//                     result[index] = *poly;
+//                 }
+//                 else
+//                 {
+//                     result[index] = modulus.value() - *poly;
+//                 }
+//             }
+//         }
     } // namespace util
 } // namespace seal

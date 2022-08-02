@@ -31,7 +31,7 @@ namespace seal
     */
     class SecretKey
     {
-        friend class KeyGenerator;
+        //friend class KeyGenerator;
 
     public:
         /**
